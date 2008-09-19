@@ -84,18 +84,18 @@ myHTTPListener.prototype = {
 
 						// DoCoMo2.0
 						var userAgentTmp = userAgent
-								.match(/(DoCoMo\/2\.0.+?\(.*?;.*?;.*?)\)/);
-						if (userAgentTmp && userAgentTmp[1]) {
+								.match(/DoCoMo\/2\.0[^(]+\([^;]*;[^;]*;[^)]*(?=\))/);
+						if (userAgentTmp) {
 							dump("##add utn match1 for DoCoMo2.0##\n");
-							userAgent = userAgentTmp[1] + ";ser" + ser + ";icc"
+							userAgent = userAgentTmp[0] + ";ser" + ser + ";icc"
 									+ icc + ")";
 						}
 
 						// DoCoMo1.0
-						userAgentTmp = userAgent.match(/(DoCoMo\/1\.0\/.+)/);
-						if (userAgentTmp && userAgentTmp[1]) {
+						userAgentTmp = userAgent.match(/DoCoMo\/1\.0\/.+/);
+						if (userAgentTmp) {
 							dump("##add utn match for DoCoMo1.0##\n");
-							userAgent = userAgentTmp[1] + "/ser" + ser;
+							userAgent = userAgentTmp[0] + "/ser" + ser;
 						}
 						httpChannel.setRequestHeader("User-Agent", userAgent,
 								false);
@@ -135,13 +135,13 @@ myHTTPListener.prototype = {
 								.copyUnicharPref("msim.config.DC.gps.lon");
 						var alt = pref
 								.copyUnicharPref("msim.config.DC.gps.alt");
-						if (parts.length >= 2){
-							if(parts[1]){
+						if (parts.length >= 2) {
+							if (parts[1]) {
 								as += "&lat="+lat+"&lon="+lon+"&geo=wgs84&xacc=3&alt="+alt;
-							}else{
+							} else {
 								as += "lat="+lat+"&lon="+lon+"&geo=wgs84&xacc=3&alt="+alt;
 							}
-						}else{
+						} else {
 							as += "?lat="+lat+"&lon="+lon+"&geo=wgs84&xacc=3&alt="+alt;
 						}
 						rewriteFlag = true;
@@ -153,7 +153,7 @@ myHTTPListener.prototype = {
 
 					if (uri.host == "w1m.docomo.ne.jp") {
 						var param = qs ? "?" + qs : "";
-						var path = uri.path.split("?")[0];
+						var path = uri.path.split("?", 2)[0];
 						if (path == "/cp/iarea") {
 							// オープンiエリア対応
 							rewriteURI(subject,
@@ -208,17 +208,17 @@ myHTTPListener.prototype = {
 				// cacheから読み込まれるときは、http-on-examine-merged-responseがnotifyされる
 				// dump("msim:topic is "+topic+"\n");
 				var newContentType = "";
-				var pictogramConverterEnabled = pref.getBoolPref("msim.config."+carrier+".pictogram.enabled")
-				if(pictogramConverterEnabled){
+				var pictogramConverterEnabled = pref.getBoolPref("msim.config."+carrier+".pictogram.enabled");
+				if (pictogramConverterEnabled) {
 					newContentType = "text/msim.html";
-				}else{
+				} else {
 					newContentType = "text/html";
 				}
 
 				var httpChannel = subject.QueryInterface(Ci.nsIHttpChannel);
 				var targetContentType = ["application/xhtml+xml", "text/vnd.wap.wml", "text/x-hdml", "text/html"];
-				for(var i=0; i<targetContentType.length; i++){
-					if(targetContentType[i] == subject.contentType){
+				for (var i=0; i<targetContentType.length; i++) {
+					if (targetContentType[i] == subject.contentType) {
 						subject.contentType = newContentType;
 					}
 				}

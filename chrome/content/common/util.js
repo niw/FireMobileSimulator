@@ -49,7 +49,7 @@ function getPageLoadEventContentDocument(event) {
 function getParamsFromPath(path){
 	var params = {};
 	var qindex = path.indexOf("?");
-	if(qindex >= 0){
+	if (qindex >= 0) {
 		params = getParamsFromQuery(path.substring(qindex+1));
 	}
 	return params;
@@ -62,12 +62,12 @@ function getParamsFromQuery(q){
 	for (var i=0; i<values.length; i++) {
 		//dump("###"+i+"\n");
 		var eindex = values[i].indexOf("=");
-		if(eindex >= 0){
+		if (eindex >= 0) {
 			//dump("decode:"+values[i].substring(eindex+1)+"\n");
 			var value;
-			try{
+			try {
 				value = decodeURI(values[i].substring(eindex+1));
-			}catch(exception){
+			} catch (exception) {
 				dump("[msim]Warning:decodeURI:"+values[i].substring(eindex+1)+"\n");
 				value = values[i].substring(eindex+1);
 			}
@@ -85,8 +85,8 @@ function getParamsFromQuery(q){
 function Point(lat,lon){
 	this.lat=lat;
 	this.lon=lon;
-};
-Point.prototype={
+}
+Point.prototype = {
 	lat : null,
 	lon : null,
 	datum : "0",
@@ -96,14 +96,14 @@ Point.prototype={
 	UNIT_DMS : "0",
 	UNIT_DEGREE : "1",
 	toDms : function (){
-		if(this.unit == this.UNIT_DEGREE){
+		if (this.unit == this.UNIT_DEGREE) {
 			this.lat = degree2dms(this.lat);
 			this.lon = degree2dms(this.lon);
 			this.unit = this.UNIT_DMS;
 		}
 	},
 	toDegree : function(){
-		if(this.unit == this.UNIT_DMS){
+		if (this.unit == this.UNIT_DMS) {
 			this.lat = dms2degree(this.lat);
 			this.lon = dms2degree(this.lon);
 			this.unit = this.UNIT_DEGREE;
@@ -114,7 +114,7 @@ Point.prototype={
 	},
 	//wgs84測地系で与えられたdegreeを、tokyo測地系に変換する
 	toTokyo : function(){
-		if(this.datum == this.DATUM_WGS){
+		if (this.datum == this.DATUM_WGS) {
 			this.toDegree();
 			//cf.http://homepage3.nifty.com/Nowral/02_DATUM/02_DATUM.html#HowTo
 			this.lat = this.lat + 0.00010696*this.lat - 0.000017467*this.lon - 0.0046020;
@@ -122,7 +122,7 @@ Point.prototype={
 			this.datum = this.DATUM_TOKYO;
 		}
 	}
-}
+};
 
 /**
  * dms(時分秒)をdegree(度)に変換する
@@ -130,11 +130,11 @@ Point.prototype={
  * @return {}
  */
 function dms2degree(dms){
-	dms.match(/[\+\-]?(\d+)\.(\d+)\.(\d+\.\d+)/);
+	dms.match(/[+-]?(\d+)\.(\d+)\.(\d+\.\d+)/);
 	dms1 = parseInt(RegExp.$1);
 	dms2 = parseInt(RegExp.$2);
 	dms3 = parseFloat(RegExp.$3);
-	var degree = dms1+dms2/60+dms3/(3600);
+	var degree = dms1+dms2/60+dms3/3600;
 	return degree;
 }
 
@@ -161,7 +161,7 @@ function degree2dms(degree){
  */
 String.prototype.padding = function(pad, len){
 	var newString = this.valueOf();
-	while(newString.length<len){
+	while (newString.length<len) {
 		newString = pad+newString;
 	}
 	return new String(newString);
@@ -169,7 +169,7 @@ String.prototype.padding = function(pad, len){
 
 function getYYYYMMDDHHmm(){
 	var now = new Date();
-	var y = (now.getYear()+1900).toString();
+	var y = (now.getFullYear()).toString();
 	var m = (now.getMonth()+1).toString().padding("0",2);
 	var d = now.getDate().toString().padding("0",2);
 	var h = now.getHours().toString().padding("0",2);
@@ -179,7 +179,7 @@ function getYYYYMMDDHHmm(){
 
 function getHiddenTag(params){
 	var r = "";
-	for(var i in params){
+	for (var i in params) {
 		r += '<input type="hidden" name="'+i+'" value="'+params[i]+'" />\n';
 	}
 	return r;

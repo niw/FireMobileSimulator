@@ -55,7 +55,7 @@ MsimStreamConverter.prototype.QueryInterface = function(iid) {
 
 	throw Components.results.NS_ERROR_NO_INTERFACE;
 
-}
+};
 
 // nsIRequestObserver methods
 MsimStreamConverter.prototype.onStartRequest = function(aRequest, aContext) {
@@ -78,12 +78,12 @@ MsimStreamConverter.prototype.onStopRequest = function(aRequest, aContext,
 	dump("[msim]onStopRequest\n");
 
 	var carrier = pref.copyUnicharPref("msim.current.carrier");
-	
+
 	//絵文字変換
-	dump("[msim]convert pictogram in msimStreamConverter.js\n")
+	dump("[msim]convert pictogram in msimStreamConverter.js\n");
 	var mpc = MobilePictogramConverter.factory(carrier);
 	mpc.setImagePath("chrome://msim/content/emoji");
-	
+
 	//文字コード判別
 	var mpccharset = "";
 	if (this.charset.toUpperCase() == "SHIFT_JIS"
@@ -100,19 +100,19 @@ MsimStreamConverter.prototype.onStopRequest = function(aRequest, aContext,
 		mpccharset = MPC_SJIS;
 	}
 	mpc.charset = mpccharset;
-	
+
 	if (AU == carrier) {
-		dump("[msim]convertPictogram for AU\n")
+		dump("[msim]convertPictogram for AU\n");
 		this.data = mpc.convert(this.data);
 		var mpc2 = new MPC_DC();
 		mpc2.setImagePath("chrome://msim/content/emoji");
 		mpc2.charset = mpccharset;
 		this.data = mpc2.convert(this.data);
 	} else if (carrier) {
-		dump("[msim]convertPictogram for DoCoMo or SoftBank\n")
+		dump("[msim]convertPictogram for DoCoMo or SoftBank\n");
 		this.data = mpc.convert(this.data);
 	}
-	
+
 	var sis = Components.classes["@mozilla.org/io/string-input-stream;1"]
 			.createInstance(Components.interfaces.nsIStringInputStream);
 	sis.setData(this.data, this.data.length);
@@ -136,12 +136,11 @@ MsimStreamConverter.prototype.onDataAvailable = function(aRequest, aContext,
 	var data = si.read(aCount);
 
 	if ((this.charset == undefined || this.charset == '')
-			&& (data
-					.match(/<?meta\s+http-equiv\s*=\s*["']content-type['"]\s+content\s*=\s*["'](.*?)["']/i) || data
-					.match(/<?xml\s+version\s*=\s*["']1.0['"]\s+encoding\s*=\s*["'](.*?)["']/i))) {
-		var m = RegExp.$1;
+			&& data
+					.match(/^<\?xml(?:\s[^>]*?)?\sencoding\s*=\s*["']([^"']*)["']|<meta(?:\s[^>]*?)?\s(?:http-equiv\s*=\s*["']content-type['"](?:\s[^>]*?)?\scontent\s*=\s*["']\s*([^"']*)["']|content\s*=\s*["']\s*([^"']*)["'](?:\s[^>]*?)?(?:\shttp-equiv\s*=\s*["']content-type['"]))/i)) {
+		var m = RegExp.$1 || RegExp.$2 || RegExp.$3;
 		dump("[msim]data match regexp:" + m + "\n");
-		if (m.match(/charset\s*=\s*(.*?)(\s|;|$)/i)) {
+		if (m.match(/^charset\s*=\s*([^\s;]+)(?:[\s;]|$)/i)) {
 			var charset = RegExp.$1;
 			this.charset = charset;
 			dump("[msim]guessed charset is " + charset + "\n");
@@ -161,7 +160,7 @@ MsimStreamConverter.prototype.onDataAvailable = function(aRequest, aContext,
 	}
 
 	this.data += data;
-}
+};
 
 // nsIStreamConverter methods
 // old name (before bug 242184)...
@@ -169,26 +168,26 @@ MsimStreamConverter.prototype.AsyncConvertData = function(aFromType, aToType,
 		aListener, aCtxt) {
 	dump("[msim]AsyncConvertData\n");
 	this.asyncConvertData(aFromType, aToType, aListener, aCtxt);
-}
+};
 
 // renamed to...
 MsimStreamConverter.prototype.asyncConvertData = function(aFromType, aToType,
 		aListener, aCtxt) {
 	// Store the listener passed to us
 	this.listener = aListener;
-}
+};
 
 // Old name (before bug 242184):
 MsimStreamConverter.prototype.Convert = function(aFromStream, aFromType,
 		aToType, aCtxt) {
 	return this.convert(aFromStream, aFromType, aToType, aCtxt);
-}
+};
 
 // renamed to...
 MsimStreamConverter.prototype.convert = function(aFromStream, aFromType,
 		aToType, aCtxt) {
 	return aFromStream;
-}
+};
 
 /* stream converter factory object (MsimStreamConverter) */
 var MsimStreamConverterFactory = new Object();
@@ -205,7 +204,7 @@ MsimStreamConverterFactory.createInstance = function(outer, iid) {
 	}
 	throw Components.results.NS_ERROR_INVALID_ARG;
 
-}
+};
 
 var MsimBrowserModule = new Object();
 
@@ -227,7 +226,7 @@ MsimBrowserModule.registerSelf = function(compMgr, fileSpec, location, type) {
 };
 
 MsimBrowserModule.unregisterSelf = function(compMgr, fileSpec, location) {
-}
+};
 
 MsimBrowserModule.getClassObject = function(compMgr, cid, iid) {
 
@@ -239,11 +238,11 @@ MsimBrowserModule.getClassObject = function(compMgr, cid, iid) {
 
 	throw Components.results.NS_ERROR_NO_INTERFACE;
 
-}
+};
 
 MsimBrowserModule.canUnload = function(compMgr) {
 	return true;
-}
+};
 
 /* entrypoint */
 function NSGetModule(compMgr, fileSpec) {

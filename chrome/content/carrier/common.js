@@ -1,6 +1,6 @@
 var MPC_SJIS = "SJIS";
-var MPC_UTF8 = "UTF-8"
-var MPC_EUCJP = "EUC_JP"
+var MPC_UTF8 = "UTF-8";
+var MPC_EUCJP = "EUC_JP";
 
 var HexStrings = function(hexstrings, charset) {
 	this.hexstrings = hexstrings || "";
@@ -13,11 +13,7 @@ HexStrings.prototype = {
 	charset : "",
 	i : 0,
 	hasNextCharacter : function() {
-		if (this.i < this.hexstrings.length - 1) {
-			return true;
-		} else {
-			return false;
-		}
+		return this.i < (this.hexstrings.length - 1);
 	},
 
 	getNextCharacterDecs : function() {
@@ -45,7 +41,7 @@ HexStrings.prototype = {
 			}
 		}
 	}
-}
+};
 
 function unpack(str) {
 	// dump("unpack start:"+str+"\n");
@@ -65,7 +61,7 @@ function sdecs2udec(chs) {
 		hex += "%" + temp.slice(-2);
 	}
 	var unicode = EscapeUnicode(UnescapeSJIS(hex));
-	if (unicode.match(/^\%u[0-9A-F]{4}$/) || unicode.match(/^\%[0-9A-F]{2}$/)) {
+	if (/^\%(?:u[0-9A-F]{4}|[0-9A-F]{2})$/.test(unicode)) {
 		//dump("return" + parseInt(unicode.substring(2, 6), 16) + "\n");
 		return parseInt(unicode.substring(2, 6), 16);
 	} else {
@@ -80,7 +76,7 @@ function u8decs2udec(chs) {
 		hex += "%" + temp.slice(-2);
 	}
 	var unicode = EscapeUnicode(UnescapeUTF8(hex));
-	if (unicode.match(/^\%u[0-9A-F]{4}$/) || unicode.match(/^\%[0-9A-F]{2}$/)) {
+	if (/^\%(?:u[0-9A-F]{4}|[0-9A-F]{2})$/.test(unicode)) {
 		//dump("return" + parseInt(unicode.substring(2, 6), 16) + "\n");
 		return parseInt(unicode.substring(2, 6), 16);
 	} else {
@@ -88,39 +84,39 @@ function u8decs2udec(chs) {
 	}
 }
 
-function utf82unicode(bits){
+function utf82unicode(bits) {
 	var rbits = new Array(2);
-	if(bits.length == 3){
+	if (bits.length == 3) {
 		var x = bits[0] & 0x0F;
 		var y = bits[1] & 0x3F;
 		var z = bits[2] & 0x3F;
 		rbits[0] = (x << 4) + (y >> 2);
 		rbits[1] = ((y & 0x3) << 6) + z;
-	}else{
+	} else {
 		dump("NOT IMPLEMENTED!\n");
 	}
 	return rbits;
 }
 
-function unicode2utf8(bits){
+function unicode2utf8(bits) {
 	var rbits = new Array(3);
-	if(bits.length == 2){
+	if (bits.length == 2) {
 		rbits[0] = 0xE0 + (bits[0] >> 4);
 		rbits[1] = 0x80 + ((bits[0] & 0x0F) << 2) + (bits[1] >> 6);
 		rbits[2] = 0x80 + (0x3F & bits[1]);
-	}else{
+	} else {
 		dump("NOT IMPLEMENTED!\n");
 	}
 	return rbits;
 }
 
-function bits2dec(bits){
-	var r=0;
-	for(var i=0; i<bits.length; i++){
+function bits2dec(bits) {
+	var r = 0;
+	for (var i=0; i<bits.length; i++) {
 		r += bits[i] << (8*(bits.length-i-1));
 	}
 	//dump(bits[0].toString(16)+",return to:"+r+"\n");
-	//if(bits.length>1){
+	//if (bits.length>1) {
 		//dump(bits[1].toString(16)+",return to:"+r+"\n");
 	//}
 	return r;

@@ -27,15 +27,15 @@ MPC_DC.prototype = {
 	convert : function(str) {
 		dump("[mpc]DoCoMo convert start.charset = "+this.charset+"\n");
 		// Firefoxから数値参照が直接渡ってこないので、とりあえずコメントアウト
-		// var re1 = /\&\#x([a-f0-9]{4});/ig;
-		// var re2 = /\&\#([0-9]{5});/ig;
+		// var re1 = /&#x([a-f0-9]{4});/ig;
+		// var re2 = /&#([0-9]{5});/g;
 		// var _this = this;
 		// Unicodeの16進数値文字参照をimgタグ形式に変換
-		// str = str.replace(re1, function(whole, s1){ var udec =
+		// str = str.replace(re1, function(whole, s1) { var udec =
 		// parseInt(s1,16); return _this.isPictogramDec(udec) ?
 		// _this.i_options_encode(udec) : s1 ; });
 		// SJISの10進数値文字参照をimgタグ形式に変換
-		// str = str.replace(re2, function(whole, s1){ var udec = sdec2udec(s1);
+		// str = str.replace(re2, function(whole, s1) { var udec = sdec2udec(s1);
 		// return _this.isPictogramDec(udec) ? _this.i_options_encode(udec) : s1
 		// ; });
 
@@ -47,7 +47,7 @@ MPC_DC.prototype = {
 		// Unicodeの16進をSJIS文字コードに変換して、さらにバイナリマッチとやるのは面倒なので、
 		// いきなりimgタグに変換する
 		dump("[mpc]DoCoMo Unicode16match start\n");
-		var re1 = /\&\#x([a-f0-9]{2})([a-f0-9]{2});/ig;
+		var re1 = /&#x([a-f0-9]{2})([a-f0-9]{2});/ig;
 		var _this = this;
 		str = str.replace(re1, function(whole, s1, s2) {
 					//dump("regmatch16:" + s1 + ":" + s2 + "\n");
@@ -66,7 +66,7 @@ MPC_DC.prototype = {
 		//TODO: 基本絵文字のみに限定する
 		if (this.charset == MPC_SJIS) {
 			dump("[mpc]DoCoMo SJIS10match start\n");
-			var regNumericReferenceDec = /\&\#([0-9]{5});/ig;
+			var regNumericReferenceDec = /&#([0-9]{5});/g;
 			str = str.replace(regNumericReferenceDec, function(whole, s1) {
 				//dump("regmatch10:" + s1 + "\n");
 				var bin;
@@ -191,7 +191,7 @@ MPC_DC.prototype = {
 	 *            path
 	 */
 	setImagePath : function(path) {
-		path.replace(RegExp('/*$'), '');
+		path.replace(RegExp('/+$'), '');
 		this.i_img_path = path + '/i/';
 	},
 
@@ -203,7 +203,7 @@ MPC_DC.prototype = {
 	 * @return string
 	 */
 	i_options_encode : function(dec) {
-		var buf = '<img src="' + this.i_img_path.replace(/[/]*$/g, "") + '/'
+		var buf = '<img src="' + this.i_img_path.replace(/\/+$/g, "") + '/'
 				+ dec + '.gif" alt="" border="0" width="12" height="12" />';
 		return buf;
 	}

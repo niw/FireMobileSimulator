@@ -26,15 +26,15 @@
 		<rows id="msim.options.device.rows">
 			<row align="center">
 				<label control="msim.options.device.device" value="&msim.options.device.device;"/>
-				<textbox id="msim.options.device.device" size="50" />
+				<textbox id="msim.options.device.device" size="50"/>
 			</row>
 			<row id="msim.options.device.carrier.row" align="center">
 				<label control="msim.options.device.carrier" value="&msim.options.device.carrier;"/>
-				<textbox id="msim.options.device.carrier" size="50" disabled="true" />
+				<textbox id="msim.options.device.carrier" size="50" disabled="true"/>
 			</row>
 			<row id="msim.options.device.useragent.row" align="center">
 				<label control="msim.options.device.useragent" value="&msim.options.device.useragent;"/>
-				<textbox id="msim.options.device.useragent" size="50" />
+				<textbox id="msim.options.device.useragent" size="50"/>
 			</row>
 		</rows>
 	</grid>

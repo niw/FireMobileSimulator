@@ -11,18 +11,18 @@
 		<grid>
 			<rows id="msim.options.pictogram.docomo.rows">
 				<row align="center">
-					<checkbox id="msim-textbox-docomo-pictogram-enabled" label="絵文字をimgタグに変換する" />
+					<checkbox id="msim-textbox-docomo-pictogram-enabled" label="絵文字をimgタグに変換する"/>
 				</row>
 			</rows>
 		</grid>
 	</groupbox>
-	
+
 	<groupbox>
 		<caption label="Au"/>
 		<grid>
 			<rows>
 				<row align="center">
-					<checkbox id="msim-textbox-au-pictogram-enabled" label="絵文字をimgタグに変換する" />
+					<checkbox id="msim-textbox-au-pictogram-enabled" label="絵文字をimgタグに変換する"/>
 				</row>
 			</rows>
 		</grid>
@@ -33,7 +33,7 @@
 		<grid>
 			<rows>
 				<row align="center">
-					<checkbox id="msim-textbox-softbank-pictogram-enabled" label="絵文字をimgタグに変換する" />
+					<checkbox id="msim-textbox-softbank-pictogram-enabled" label="絵文字をimgタグに変換する"/>
 				</row>
 			</rows>
 		</grid>

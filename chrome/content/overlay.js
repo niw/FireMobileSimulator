@@ -35,13 +35,13 @@
 var msim = {
 	onInitialize : function() {
 		// initialization code
-		dump("[msim]onInitialize\n")
+		dump("[msim]onInitialize\n");
 
 		this.strings = document.getElementById("msim-strings");
 		// initialize UserAgent
 		var windowContent = window.getBrowser();
 		if (windowContent) {
-			dump("set load2\n")
+			dump("set load2\n");
 			try {
 
 				window.removeEventListener('load', msim_onInitialize, false);
@@ -93,7 +93,7 @@ var msim = {
 	/*
 	 * onLoad : function(event) { dump("[msim]onLoad\n"); var contentDocument =
 	 * getPageLoadEventContentDocument(event); // If the content document is set
-	 * if (contentDocument) { dump("update_icon();\n") this.updateIcon(); } },
+	 * if (contentDocument) { dump("update_icon();\n"); this.updateIcon(); } },
 	 */
 	displayDeviceSwitcherMenu : function(menu, suffix) {
 		var optionsSeparator = document.getElementById("msim-separator2-"
@@ -220,17 +220,17 @@ var msim = {
 
 				// WML暫定対応
 				var oneventTags = ndDocument.getElementsByTagName("wml:onevent");
-				for(var i=0; i<oneventTags.length; i++){
+				for (var i=0; i<oneventTags.length; i++){
 					dump("wml:onevent found:"+i+"\n");
 					var onevent = oneventTags[i];
 					var type = onevent.getAttribute("type");
-					if(type=="onenterforward"){
+					if (type == "onenterforward") {
 						var goTags = onevent.getElementsByTagName("wml:go");
-						for(var j=0; j<goTags.length; j++){
+						for (var j=0; j<goTags.length; j++){
 							dump("wml:go found:"+j+"\n");
 							var go = goTags[j];
 							var href = go.getAttribute("href");
-							if(href){
+							if (href) {
 								dump("onenterforward go:"+href+"\n");
 								ndDocument.location.href = href;
 							}
@@ -238,13 +238,13 @@ var msim = {
 					}
 				}
 				var wmlAnchorTags = ndDocument.getElementsByTagName("wml:anchor");
-				for(var i=0; i<wmlAnchorTags.length; i++){
+				for (var i=0; i<wmlAnchorTags.length; i++){
 					var anchor = wmlAnchorTags[i];
 					var spawnTags = anchor.getElementsByTagName("wml:spawn");
-					for(var j=0; j<spawnTags.length; j++){
+					for (var j=0; j<spawnTags.length; j++){
 						var spawn = spawnTags[j];
 						var href = spawn.getAttribute("href");
-						if(href){
+						if (href) {
 							dump("wml:anchor->wml:spawn found. set link:"+href+"\n");
 							//spawn.addEventListener("click", function(){ndDocument.location.href=href;},
 							//	false);
@@ -254,8 +254,8 @@ var msim = {
 				}
 
 				var pictogramConverterEnabled = pref.getBoolPref("msim.config."+carrier+".pictogram.enabled")
-				if(pictogramConverterEnabled){
-					dump("[msim]convert pictogram in overlay.js\n")
+				if (pictogramConverterEnabled){
+					dump("[msim]convert pictogram in overlay.js\n");
 					var mpc = MobilePictogramConverter.factory(carrier);
 					mpc.setImagePath("chrome://msim/content/emoji");
 					var imgs = ndDocument.getElementsByTagName("img");
@@ -265,13 +265,13 @@ var msim = {
 						if (iconno && !isNaN(iconno)) {
 							imgs[i].setAttribute("src", mpc.getImageSrc(parseInt(
 											iconno, 10)));
-						}else if(iconno){
+						} else if (iconno) {
 							iconno = mpc.getIconNumFromIconName("_"+iconno);
-							if(iconno){
+							if (iconno) {
 								imgs[i].setAttribute("src", mpc.getImageSrc(iconno));
 							}
 						}
-	
+
 					}
 				}
 			}
@@ -293,11 +293,11 @@ var msim = {
 							.getString("msim_lcsConfirmation"))) {
 						pref.setBoolPref("msim.temp.lcsflag", true);
 						return true;
-					}else{
+					} else {
 						return false;
 					}
 				};
-				
+
 				pref.setBoolPref("msim.temp.utnflag", false);
 				pref.setBoolPref("msim.temp.lcsflag", false);
 
@@ -309,10 +309,10 @@ var msim = {
 						anchorTag.addEventListener("click", setUtnFunction,
 								false);
 					}
-					
+
 					var lcs = anchorTag.getAttribute("lcs");
 					if (null != lcs) {
-						dump("setlcs for a tag\n")
+						dump("setlcs for a tag\n");
 						anchorTag.addEventListener("click", setLcsFunction,
 								false);
 					}
@@ -335,17 +335,17 @@ var msim = {
 
 					var lcs = formTag.getAttribute("lcs");
 					if (null != lcs) {
-						dump("setlcs for form tag\n")
+						dump("setlcs for form tag\n");
 						formTag.addEventListener("submit", setLcsFunction,
 								false);
 					}
 
 					//オープンiエリアの場合のメソッドを強制的にGETに書き換え
 					var action = formTag.getAttribute("action");
-					if(action && action == "http://w1m.docomo.ne.jp/cp/iarea"){
+					if (action && action == "http://w1m.docomo.ne.jp/cp/iarea") {
 						formTag.setAttribute("method", "GET");
 					}
-					
+
 					//uid=NULLGWDOCOMOのPOST送信
 					var method = formTag.getAttribute("method");
 					if (method && method.toUpperCase() == "POST") {
@@ -425,4 +425,4 @@ function msim_onUnload(e) {
 window.addEventListener("load", msim_onInitialize, false);
 window.addEventListener("unload", msim_onUnload, false);
 
-dump("[msim]overlay.js is loaded.\n")
+dump("[msim]overlay.js is loaded.\n");
