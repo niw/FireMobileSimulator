@@ -130,10 +130,11 @@ Point.prototype = {
  * @return {}
  */
 function dms2degree(dms){
-	dms.match(/[+-]?(\d+)\.(\d+)\.(\d+\.\d+)/);
-	dms1 = parseInt(RegExp.$1);
-	dms2 = parseInt(RegExp.$2);
-	dms3 = parseFloat(RegExp.$3);
+	if (!/[-+]?(\d+)\.(\d+)\.(\d+\.\d+)/.test(dms)) {
+		return null;
+	var dms1 = parseInt(RegExp.$1);
+	var dms2 = parseInt(RegExp.$2);
+	var dms3 = parseFloat(RegExp.$3);
 	var degree = dms1+dms2/60+dms3/3600;
 	return degree;
 }
