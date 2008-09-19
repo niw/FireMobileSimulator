@@ -146,7 +146,7 @@ MsimStreamConverter.prototype.onDataAvailable = function(aRequest, aContext,
 		}
 	} else {
 		dump("[msim]Already got charset: " + this.charset
-				+ ")\n");
+				+ "\n");
 	}
 
 	// Default charset
