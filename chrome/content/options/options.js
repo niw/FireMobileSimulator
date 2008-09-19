@@ -277,7 +277,7 @@ function msim_initializeGps(){
 }
 
 function msim_initializePictogram(){
-        dump("[msim]initializePictogram.\n");
+	dump("[msim]initializePictogram.\n");
 	var pageDocument = document.getElementById("msim-options-iframe").contentDocument;
 	pageDocument.getElementById("msim-textbox-docomo-pictogram-enabled").checked = pref.getBoolPref("msim.config.DC.pictogram.enabled");
 	pageDocument.getElementById("msim-textbox-au-pictogram-enabled").checked = pref.getBoolPref("msim.config.AU.pictogram.enabled");
