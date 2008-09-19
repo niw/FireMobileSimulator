@@ -137,10 +137,10 @@ MsimStreamConverter.prototype.onDataAvailable = function(aRequest, aContext,
 
 	if ((this.charset == undefined || this.charset == '')
 			&& data
-					.match(/^<\?xml(?:\s[^>]*?)?\sencoding\s*=\s*["']([^"']*)["']|<meta(?:\s[^>]*?)?\s(?:http-equiv\s*=\s*["']content-type['"](?:\s[^>]*?)?\scontent\s*=\s*["']\s*([^"']*)["']|content\s*=\s*["']\s*([^"']*)["'](?:\s[^>]*?)?(?:\shttp-equiv\s*=\s*["']content-type['"]))/i)) {
+					.match(/^<\?xml(?:\s[^>]*?)?\sencoding\s*=\s*["']([^"']*)["']|<meta(?:\s[^>]*?)?\s(?:http-equiv\s*=\s*["']content-type['"](?:\s[^>]*?)?\scontent\s*=\s*["']([^"']*)["']|content\s*=\s*["']([^"']*)["'](?:\s[^>]*?)?(?:\shttp-equiv\s*=\s*["']content-type['"]))/i)) {
 		var m = RegExp.$1 || RegExp.$2 || RegExp.$3;
 		dump("[msim]data match regexp:" + m + "\n");
-		if (m.match(/^charset\s*=\s*([^\s;]+)(?:[\s;]|$)/i)) {
+		if (m.match(/;\s*charset=([^\s;]+)/i)) {
 			var charset = RegExp.$1;
 			this.charset = charset;
 			dump("[msim]guessed charset is " + charset + "\n");
