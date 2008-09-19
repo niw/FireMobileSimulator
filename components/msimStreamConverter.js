@@ -135,21 +135,17 @@ MsimStreamConverter.prototype.onDataAvailable = function(aRequest, aContext,
 	si.init(aInputStream);
 	var data = si.read(aCount);
 
-	if ((this.charset == undefined || this.charset == '')
-			&& data
-					.match(/^<\?xml(?:\s[^>]*?)?\sencoding\s*=\s*["']([^"']*)["']|<meta(?:\s[^>]*?)?\s(?:http-equiv\s*=\s*["']content-type['"](?:\s[^>]*?)?\scontent\s*=\s*["']([^"']*)["']|content\s*=\s*["']([^"']*)["'](?:\s[^>]*?)?(?:\shttp-equiv\s*=\s*["']content-type['"]))/i)) {
-		var m = RegExp.$1 || RegExp.$2 || RegExp.$3;
-		dump("[msim]data match regexp:" + m + "\n");
-		if (m.match(/;\s*charset=([^\s;]+)/i)) {
-			var charset = RegExp.$1;
-			this.charset = charset;
-			dump("[msim]guessed charset is " + charset + "\n");
-		} else {
+	var m;
+	if (this.charset == undefined || this.charset == '') {
+		if (/^<\?xml(?:\s[^>]*?)?\sencoding\s*=\s*["']([^"']*)["']|<meta(?:\s[^>]*?)?\s(?:http-equiv\s*=\s*(["']?)content-type\2(?:\s[^>]*?)?\scontent\s*=\s*["']?[^;]+(?:;[^;=]+(?:=\s*[^\s;]*)?)*?;\s*charset\s*=\s*([^"'\s;<>]+)|content\s*=\s*(["']?)[^;]+(?:;[^;=]+(?:=\s*[^\s;]*)?)*?;\s*charset\s*=\s*([^"'\s;<>]+)[^"']*?\4(?:\s[^>]*?)?\shttp-equiv\s*=\s*(["']?)content-type\6)/i.test(data)) {
+			m = RegExp.$1 || RegExp.$3 || RegExp.$5;
 			this.charset = m;
 			dump("[msim]guessed charset is " + m + "\n");
+		} else {
+			dump("[msim]No encoding match found");
 		}
 	} else {
-		dump("[msim]No encoding match found (or already got charset: " + this.charset
+		dump("[msim]Already got charset: " + this.charset
 				+ ")\n");
 	}
 
