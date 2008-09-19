@@ -41,7 +41,7 @@ function msim_deleteDevice(){
 		for(var i=0; i<deviceAttribute[carrier].length; i++){
 			pref.deletePref(prefPrefix+deviceAttribute[carrier][i]);
 		}
-		
+
 		//既に使われている端末だったら設定をリセット
 		if(pref.copyUnicharPref("msim.current.id") == deletedId && pref.copyUnicharPref("msim.current.carrier") == carrier){
 			dump("[msim]Debug : This device is used. Reset your settings.\n");
@@ -51,7 +51,7 @@ function msim_deleteDevice(){
 			pref.deletePref("msim.current.useragent");
 			pref.deletePref("msim.current.id");
 		}
-		
+
 		//各端末のidを再計算
 		var count = pref.getIntPref("msim.devicelist." + carrier + ".count");
 		dump(deletedId+":"+count+"\n");
@@ -133,7 +133,7 @@ function msim_initializeDevices(){
 
 	for(var j = 0; j < carrierArray.length; j++){
 		var carrier = carrierArray[j];
-		
+
 		deviceCount = pref.getIntPref("msim.devicelist." + carrier + ".count");
 		for(var i = 1; i <= deviceCount; i++){
 			var device = pref.copyUnicharPref("msim.devicelist." + carrier + "." + i + ".device");
@@ -145,18 +145,18 @@ function msim_initializeDevices(){
 			}
 		}
 	}
-	
+
 	msim_deviceSelected();
 }
 
 // Saves the user's options
 function msim_saveOptions(){
-	var option	  = null;
+	var option      = null;
 	var optionValue = null;
 
 	// Make sure current page is stored
 	msim_storeOptions();
-	
+
 	// Loop through the boolean options
 	for(option in msim_optionsDataBoolean){
 		pref.setBoolPref(option, msim_optionsDataBoolean[option]);
@@ -203,7 +203,7 @@ function msim_storeOptions(){
 	}else if(iFrameSrc.indexOf("gps") != -1){
 		dump("[msim]store gps.\n");
 		msim_optionsDataString["msim.config.DC.gps.areacode"]    = pageDocument.getElementById("msim-textbox-docomo-gps-areacode").value;
-		msim_optionsDataString["msim.config.DC.gps.areaname"]    = pageDocument.getElementById("msim-textbox-docomo-gps-areaname").value;		
+		msim_optionsDataString["msim.config.DC.gps.areaname"]    = pageDocument.getElementById("msim-textbox-docomo-gps-areaname").value;
 		msim_optionsDataString["msim.config.DC.gps.lat"]    = pageDocument.getElementById("msim-textbox-docomo-gps-lat").value;
 		msim_optionsDataString["msim.config.DC.gps.lon"]    = pageDocument.getElementById("msim-textbox-docomo-gps-lon").value;
 		msim_optionsDataString["msim.config.DC.gps.alt"]    = pageDocument.getElementById("msim-textbox-docomo-gps-alt").value;
@@ -223,7 +223,7 @@ function msim_deviceSelected(){
 	var pageDocument = document.getElementById("msim-options-iframe").contentDocument;
 	var deviceBox    = pageDocument.getElementById("msim-listbox");
 	var selectedItem = deviceBox.selectedItem;
-	var editButton     = pageDocument.getElementById("msim-edit");
+	var editButton   = pageDocument.getElementById("msim-edit");
 	if(selectedItem){
 		editButton.disabled = false;
 	}else{
@@ -240,7 +240,7 @@ function clearAllDeviceSettings(){
 			var count = pref.getIntPref("msim.devicelist." + carrier + ".count");
 			for(var j=1; j<=count; j++){
 				var prefPrefix = "msim.devicelist." + carrier + "." + j + ".";
-				
+
 				dump("target prefix is "+prefPrefix+"\n");
 				for(var k=0; k<deviceBasicAttribute.length; k++){
 					pref.deletePref(prefPrefix+deviceBasicAttribute[k]);
@@ -256,17 +256,16 @@ function clearAllDeviceSettings(){
 		pref.deletePref("general.useragent.override");
 		pref.deletePref("msim.current.useragent");
 		pref.deletePref("msim.current.id");
-		
+
 		//TODO:ツールバー上のiconをupdate
 		//parent.msim.resetDevice();
 	}
-	
+
 	msim_initializeDevices();
 }
 
 // Initializes the general page
-function msim_initializeGps()
-{
+function msim_initializeGps(){
 	var pageDocument = document.getElementById("msim-options-iframe").contentDocument;
 	pageDocument.getElementById("msim-textbox-docomo-gps-areacode").setAttribute("value",pref.copyUnicharPref("msim.config.DC.gps.areacode"));
 	pageDocument.getElementById("msim-textbox-docomo-gps-areaname").setAttribute("value",pref.copyUnicharPref("msim.config.DC.gps.areaname"));
@@ -277,9 +276,8 @@ function msim_initializeGps()
 	pageDocument.getElementById("msim-textbox-au-gps-lon").setAttribute("value",pref.copyUnicharPref("msim.config.AU.gps.lon"));
 }
 
-function msim_initializePictogram()
-{
-	dump("[msim]initializePictogram.\n")
+function msim_initializePictogram(){
+        dump("[msim]initializePictogram.\n");
 	var pageDocument = document.getElementById("msim-options-iframe").contentDocument;
 	pageDocument.getElementById("msim-textbox-docomo-pictogram-enabled").checked = pref.getBoolPref("msim.config.DC.pictogram.enabled");
 	pageDocument.getElementById("msim-textbox-au-pictogram-enabled").checked = pref.getBoolPref("msim.config.AU.pictogram.enabled");

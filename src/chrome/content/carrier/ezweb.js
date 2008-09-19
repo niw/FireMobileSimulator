@@ -27,12 +27,12 @@ MPC_AU.prototype = {
 	 */
 	_____convert : function(str) {
 		// 2008/09/03 この変換は正規表現でなくてDOMでやった方が良いので使っていない
-		var re1 = /<img\s+(icon|localsrc)="?([0-9]+)"?\s*>/ig;
+		var re1 = /<img\s+(?:icon|localsrc)\s*=\s*(["']?)([0-9]+)\1\s*>/ig;
 
 		var _this = this;
 		var f = function(whole, s1, s2) {
 			return _this.e_options_encode(s2);
-		}
+		};
 		str = str.replace(re1, f);
 		return str;
 	},
@@ -44,7 +44,7 @@ MPC_AU.prototype = {
 	 *            path
 	 */
 	setImagePath : function(path) {
-		path.replace(RegExp('/*$'), '');
+		path.replace(RegExp('/+$'), '');
 		this.e_img_path = path + '/e/';
 	},
 
@@ -64,9 +64,9 @@ MPC_AU.prototype = {
 	},
 
 	getImageSrc : function(iconno) {
-		return this.e_img_path.replace(/[/]*$/g, "") + '/' + iconno + '.gif';
+		return this.e_img_path.replace(/\/+$/g, "") + '/' + iconno + '.gif';
 	},
-	
+
 	getIconNumFromIconName : function(iconname){
 		//javascriptの予約語が含まれているため、キー名の先頭に_(アンダーバー)を付与している
 		var map = {
@@ -772,8 +772,8 @@ MPC_AU.prototype = {
 		} else {
 			result = false;
 		}
-		
-		if(char1 == 0xEE && char2 == 0x94){
+
+		if (char1 == 0xEE && char2 == 0x94) {
 			dump("##probably pictogram?? "+char1+":"+char2+":"+char3+"\n")
 		}
 		// dump("=>"+result+"\n");
@@ -822,12 +822,12 @@ MPC_AU.prototype = {
 			var decs = [dec1, dec2];
 			if (_this.isPictogramSJISDecs(decs)) {
 				// decsはSJISの文字コード
-				dump("au SJIS 16 match\n")
+				dump("au SJIS 16 match\n");
 				return _this
 						.e_options_encode(_this.getIconMapSJIS()[bits2dec(decs)]);
 			} else if (_this.isPictogramUnicodeDecs(decs)) {
 				// decsはUnicode
-				dump("au Unicode 16 match\n")
+				dump("au Unicode 16 match\n");
 				return _this
 						.e_options_encode(_this.getIconMapUnicode()[bits2dec(decs)]);
 			} else {
@@ -837,7 +837,7 @@ MPC_AU.prototype = {
 			}
 		});
 		// SJIS10進数値参照を、SJIS文字コードに変換
-		var re2 = /\&\#([0-9]{5});/ig;
+		var re2 = /\&\#([0-9]{5});/g;
 		str = str.replace(re2, function(whole, s1) {
 			dump("[mpc]au regmatch10:" + s1 + "\n");
 			var bin;
@@ -852,16 +852,16 @@ MPC_AU.prototype = {
 			}
 			if (_this.isPictogramSJISDecs(decs)) {
 				// decsはSJISの文字コード
-				dump("au SJIS 10 match\n")
+				dump("au SJIS 10 match\n");
 				return _this
 						.e_options_encode(_this.getIconMapSJIS()[bits2dec(decs)]);
 			} else if (_this.isPictogramUnicodeDecs(decs)) {
 				// decsはUnicode
-				dump("au Unicode 10 match\n")
+				dump("au Unicode 10 match\n");
 				return _this
 						.e_options_encode(_this.getIconMapUnicode()[bits2dec(decs)]);
 			} else {
-				dump("au 10 no match\n")
+				dump("au 10 no match\n");
 				// return String.fromCharCode(dec1) + String.fromCharCode(dec2);
 				return whole;
 			}
@@ -909,7 +909,7 @@ MPC_AU.prototype = {
 		if (bits.length != 2) {
 			return r;
 		}
-		r[0] = bits[0] + 0x07
+		r[0] = bits[0] + 0x07;
 		r[1] = bits[1];
 		return r;
 	},
@@ -1558,7 +1558,7 @@ MPC_AU.prototype = {
 				62603 : 820,
 				62604 : 821,
 				62605 : 822
-			}
+			};
 		}
 		return this.icomMap;
 	},
@@ -2207,7 +2207,7 @@ MPC_AU.prototype = {
 				60294 : 820,
 				60295 : 821,
 				60296 : 822
-			}
+			};
 		}
 		return this.icomMap;
 	}

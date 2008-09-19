@@ -17,4 +17,4 @@
 <!ENTITY msim.options.add "追加する">
 <!ENTITY msim.options.device.device "デバイス名(必須)">
 <!ENTITY msim.options.device.carrier "キャリア(必須)">
-<!ENTITY msim.options.device.useragent "UserAgent(必須)">
+<!ENTITY msim.options.device.useragent "User agent(必須)">

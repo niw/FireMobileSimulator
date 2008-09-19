@@ -4,7 +4,7 @@
 <!DOCTYPE page SYSTEM "chrome://msim/locale/msim.dtd">
 
 <page onload="parent.msim_initializeOptions()"
-	  xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 	<groupbox>
 		<caption label="&msim.options.devices.label;"/>
@@ -23,10 +23,10 @@
 				</row>
 				<row align="top">
 					<hbox>
-						<button label="&msim.options.add;" oncommand="parent.msim_addDevice()" accesskey="n" />
-						<button id="msim-edit" label="&msim.options.edit;" oncommand="parent.msim_editDevice()" accesskey="e" />
-						<button id="msim-delete" label="&msim.options.delete;" oncommand="parent.msim_deleteDevice()" accesskey="d" />
-						<button id="msim-clearall" label="&msim.options.clearall;" oncommand="parent.clearAllDeviceSettings()" accesskey="c" />
+						<button label="&msim.options.add;" oncommand="parent.msim_addDevice()" accesskey="n"/>
+						<button id="msim-edit" label="&msim.options.edit;" oncommand="parent.msim_editDevice()" accesskey="e"/>
+						<button id="msim-delete" label="&msim.options.delete;" oncommand="parent.msim_deleteDevice()" accesskey="d"/>
+						<button id="msim-clearall" label="&msim.options.clearall;" oncommand="parent.clearAllDeviceSettings()" accesskey="c"/>
 					</hbox>
 				</row>
 			</rows>

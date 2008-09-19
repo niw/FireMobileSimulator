@@ -20,11 +20,11 @@ function openiareaInit(params){
 <div>この情報を情報提供者に送信します。</div>\
 <div>よろしいですか？</div>\
 <form method="POST" action='+nl+'>\
-<input type="hidden" name="AREACODE" value="'+areacode+'" />';
+<input type="hidden" name="AREACODE" value="'+areacode+'">';
 body += getHiddenTag(arg1params);
 body += getHiddenTag(arg2params);
 body += '\
-<div align="center"><input type="submit" name="ACTN" value="OK" /></div>\
+<div align="center"><input type="submit" name="ACTN" value="OK"></div>\
 </form>\
 ';
 		openiareaBody.innerHTML = body;
@@ -39,17 +39,17 @@ body += '<div>経度:'+lat+'</div>\
 <div>緯度:'+lon+'</div>\
 <div>XX付近</div>\
 <form method="POST" action="'+nl+'">';
-if(posinfo == 1){body += '<div align="center"><input type="hidden" name="AREACODE" value="'+areacode+'" /></div>';}
+if(posinfo == 1){body += '<div align="center"><input type="hidden" name="AREACODE" value="'+areacode+'"></div>';}
 body += '\
-<input type="hidden" name="LAT" value="'+lat+'" />\
-<input type="hidden" name="LON" value="'+lon+'" />\
-<input type="hidden" name="GEO" value="wgs84" />\
-<input type="hidden" name="XACC" value="1" />';
+<input type="hidden" name="LAT" value="'+lat+'">\
+<input type="hidden" name="LON" value="'+lon+'">\
+<input type="hidden" name="GEO" value="wgs84">\
+<input type="hidden" name="XACC" value="1">';
 body += getHiddenTag(arg1params);
 body += getHiddenTag(arg2params);
 body += '\
-<input type="hidden" name="POSINFO" value="'+posinfo+'" />\
-<div align="center"><input type="submit" name="ACTN" value="OK" /></div>\
+<input type="hidden" name="POSINFO" value="'+posinfo+'">\
+<div align="center"><input type="submit" name="ACTN" value="OK"></div>\
 </form>\
 ';
 		openiareaBody.innerHTML = body;

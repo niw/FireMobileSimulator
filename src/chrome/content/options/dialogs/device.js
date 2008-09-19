@@ -40,7 +40,7 @@ function msim_initializeDevice() {
 		document.getElementById("msim.options.device.device").disabled = false;
 
 	} else if (msim_windowType == "edit") {
-		dump("edit\n")
+                dump("edit\n");
 		document.title = stringBundle.getString("msim_editDeviceTitle");
 		carrier = window.arguments[1];
 		id = window.arguments[2];

@@ -34,9 +34,9 @@
  * 
  * ***** END LICENSE BLOCK ***** */
 
-const Cc   = Components.classes;
-const Ci   = Components.interfaces;
-const Cr   = Components.results;
+const Cc = Components.classes;
+const Ci = Components.interfaces;
+const Cr = Components.results;
 const kSCHEME = "device";
 const kPROTOCOL_NAME = "KDDI device protocol";
 const kPROTOCOL_CONTRACTID = "@mozilla.org/network/protocol;1?name=" + kSCHEME;
@@ -76,7 +76,7 @@ Protocol.prototype = {
 			return ios.newChannel("chrome://msim/content/html/error.html", null, null);
 		}
 	}
-}
+};
 
 var ProtocolFactory = {
 	createInstance: function (outer, iid){
@@ -89,7 +89,7 @@ var ProtocolFactory = {
 
 		return new Protocol();
 	}
-}
+};
 
 var myModule = {
 	registerSelf: function (compMgr, fileSpec, location, type){
@@ -98,8 +98,8 @@ var myModule = {
 			kPROTOCOL_CID,
 			kPROTOCOL_NAME,
 			kPROTOCOL_CONTRACTID,
-			fileSpec, 
-			location, 
+			fileSpec,
+			location,
 			type
 		);
 	},
@@ -110,14 +110,14 @@ var myModule = {
 
 		if (!iid.equals(Ci.nsIFactory))
 			throw Cr.NS_ERROR_NOT_IMPLEMENTED;
-			
+
 		return ProtocolFactory;
 	},
 
 	canUnload: function (compMgr){
 		return true;
 	}
-}
+};
 
 function NSGetModule(compMgr, fileSpec){
 	return myModule;

@@ -9,19 +9,19 @@
 </head>
 <body onload="a();">
 <h3>Au Unicode16進数値参照で絵文字を表記する</h3>
-<script>
+<script type="text/javascript">
 function a(){
 	var emojis = ["あ&#xE488;い", "a&#xE481;b", "test&#xE511;emoji"];
-	
+
 	var carrier = AU;
 	var mpc = MobilePictogramConverter.factory(carrier);
 	mpc.setImagePath("../src/chrome/content/emoji");
 	mpc.charset = MPC_UTF8;
-	
+
 	for(var i=0; i<emojis.length; i++){
 		document.write(emojis[i]+":");
 		document.write(mpc.convert(emojis[i]));
-		document.write("<br />");
+		document.write("<br/>");
 	}
 }
 </script>
