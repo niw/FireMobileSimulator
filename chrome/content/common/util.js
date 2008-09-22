@@ -117,7 +117,7 @@ function getParamsFromQuery(q, func){
 function Point(lat,lon){
 	this.lat=lat;
 	this.lon=lon;
-}
+};
 Point.prototype = {
 	lat : null,
 	lon : null,
@@ -164,6 +164,7 @@ Point.prototype = {
 function dms2degree(dms){
 	if (!/[-+]?(\d+)\.(\d+)\.(\d+\.\d+)/.test(dms)) {
 		return null;
+	}
 	var dms1 = parseInt(RegExp.$1);
 	var dms2 = parseInt(RegExp.$2);
 	var dms3 = parseFloat(RegExp.$3);
