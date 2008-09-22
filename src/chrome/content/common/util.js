@@ -46,16 +46,29 @@ function getPageLoadEventContentDocument(event) {
 	return null;
 }
 
-function getParamsFromPath(path){
+/**
+ * 
+ * @param {} path パス
+ * @param {} func パラメータの値をデコードする関数(デフォルトではdecodeURIが使用される)
+ * @return {}
+ */
+function getParamsFromPath(path, func){
 	var params = {};
 	var qindex = path.indexOf("?");
 	if (qindex >= 0) {
-		params = getParamsFromQuery(path.substring(qindex+1));
+		params = getParamsFromQuery(path.substring(qindex+1), func);
 	}
 	return params;
 }
 
-function getParamsFromQuery(q){
+/**
+ * 
+ * @param {} q　クエリー
+ * @param {} func パラメータの値をデコードする関数(デフォルトではdecodeURIが使用される)
+ * @return {}
+ */
+function getParamsFromQuery(q, func){
+	if(!func || !func instanceof Function) func = decodeURI;
 	//dump("##getParamsFromQuery start\n");
 	var params = {};
 	var values = q.split("&");
@@ -66,7 +79,7 @@ function getParamsFromQuery(q){
 			//dump("decode:"+values[i].substring(eindex+1)+"\n");
 			var value;
 			try {
-				value = decodeURI(values[i].substring(eindex+1));
+				value = func(values[i].substring(eindex+1));
 			} catch (exception) {
 				dump("[msim]Warning:decodeURI:"+values[i].substring(eindex+1)+"\n");
 				value = values[i].substring(eindex+1);
@@ -181,6 +194,9 @@ function getYYYYMMDDHHmm(){
 function getHiddenTag(params){
 	var r = "";
 	for (var i in params) {
+		if(i.toUpperCase() == "UID" && params[i].toUpperCase() == "NULLGWDOCOMO"){
+			params[i] = pref.copyUnicharPref("msim.config.DC.uid");
+		}
 		r += '<input type="hidden" name="'+i+'" value="'+params[i]+'" />\n';
 	}
 	return r;
