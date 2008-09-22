@@ -106,6 +106,7 @@ var msim = {
 					menuItem.setAttribute("oncommand", "setDevice(\"" + carrier
 									+ "\", " + i + ");");
 					menuItem.setAttribute("type", "radio");
+					menuItem.setAttribute("name", "devicelist");
 					menu.insertBefore(menuItem, optionsSeparator);
 				}
 			}
