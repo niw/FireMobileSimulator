@@ -56,7 +56,7 @@ MPC_AU.prototype = {
 	 *            path
 	 */
 	setImagePath : function(path) {
-		path.replace(RegExp('/+$'), '');
+		path.replace(/\/+$/, '');
 		this.e_img_path = path + '/e/';
 	},
 
@@ -76,7 +76,7 @@ MPC_AU.prototype = {
 	},
 
 	getImageSrc : function(iconno) {
-		return this.e_img_path.replace(/\/+$/g, "") + '/' + iconno + '.gif';
+		return this.e_img_path.replace(/\/+$/, "") + '/' + iconno + '.gif';
 	},
 
 	getIconNumFromIconName : function(iconname){

@@ -87,25 +87,26 @@ function getParamsFromPath(path, func){
  * @return {}
  */
 function getParamsFromQuery(q, func){
-	if(!func || !func instanceof Function) func = decodeURI;
+	if (!func || !func instanceof Function) func = decodeURI;
 	//dump("##getParamsFromQuery start\n");
 	var params = {};
 	var values = q.split("&");
-	for (var i=0; i<values.length; i++) {
+	values.forEach(function (v, i) {
 		//dump("###"+i+"\n");
-		var eindex = values[i].indexOf("=");
-		if (eindex >= 0) {
-			//dump("decode:"+values[i].substring(eindex+1)+"\n");
-			var value;
-			try {
-				value = func(values[i].substring(eindex+1));
-			} catch (exception) {
-				dump("[msim]Warning:decodeURI:"+values[i].substring(eindex+1)+"\n");
-				value = values[i].substring(eindex+1);
-			}
-			params["" + values[i].substring(0,eindex)] = "" + value;
+		var eindex = v.indexOf("=");
+		if (eindex == -1) {
+			return;
 		}
-	}
+		//dump("decode:"+v.substring(eindex+1)+"\n");
+		var value;
+		try {
+			value = func(v.substring(eindex+1));
+		} catch (exception) {
+			dump("[msim]Warning:decodeURI:"+v.substring(eindex+1)+"\n");
+			value = v.substring(eindex+1);
+		}
+		params["" + v.substring(0,eindex)] = "" + value;
+	});
 	return params;
 }
 
@@ -214,7 +215,7 @@ function getYYYYMMDDHHmm(){
 function getHiddenTag(params){
 	var r = "";
 	for (var i in params) {
-		if(i.toUpperCase() == "UID" && params[i].toUpperCase() == "NULLGWDOCOMO"){
+		if (i.toUpperCase() == "UID" && params[i].toUpperCase() == "NULLGWDOCOMO") {
 			params[i] = pref.copyUnicharPref("msim.config.DC.uid");
 		}
 		r += '<input type="hidden" name="'+i+'" value="'+params[i]+'" />\n';

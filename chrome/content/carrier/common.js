@@ -80,7 +80,7 @@ function sdecs2udec(chs) {
 		hex += "%" + temp.slice(-2);
 	}
 	var unicode = EscapeUnicode(UnescapeSJIS(hex));
-	if (/^\%(?:u[0-9A-F]{4}|[0-9A-F]{2})$/.test(unicode)) {
+	if (/^%(?:u[0-9A-F]{4}|[0-9A-F]{2})$/.test(unicode)) {
 		//dump("return" + parseInt(unicode.substring(2, 6), 16) + "\n");
 		return parseInt(unicode.substring(2, 6), 16);
 	} else {
@@ -95,7 +95,7 @@ function u8decs2udec(chs) {
 		hex += "%" + temp.slice(-2);
 	}
 	var unicode = EscapeUnicode(UnescapeUTF8(hex));
-	if (/^\%(?:u[0-9A-F]{4}|[0-9A-F]{2})$/.test(unicode)) {
+	if (/^%(?:u[0-9A-F]{4}|[0-9A-F]{2})$/.test(unicode)) {
 		//dump("return" + parseInt(unicode.substring(2, 6), 16) + "\n");
 		return parseInt(unicode.substring(2, 6), 16);
 	} else {

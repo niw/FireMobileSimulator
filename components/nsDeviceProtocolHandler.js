@@ -53,7 +53,7 @@ Protocol.prototype = {
 
 	newChannel: function(aURI){
 		var ios = Cc["@mozilla.org/network/io-service;1"].getService(Ci.nsIIOService);
-		if(aURI.asciiSpec.indexOf("device:location")==0 || aURI.asciiSpec.indexOf("device:gpsone") == 0){
+		if(aURI.asciiSpec.indexOf("device:location") == 0 || aURI.asciiSpec.indexOf("device:gpsone") == 0){
 			return ios.newChannel("chrome://msim/content/html/au_gps.html", null, null);
 		}else{
 			return ios.newChannel("chrome://msim/content/html/error.html", null, null);

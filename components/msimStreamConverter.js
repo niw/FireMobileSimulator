@@ -134,7 +134,7 @@ MsimStreamConverter.prototype.onDataAvailable = function(aRequest, aContext,
 
 	var m;
 	if (this.charset == undefined || this.charset == '') {
-		if (/^<\?xml(?:\s[^>]*?)?\sencoding\s*=\s*["']([^"']*)["']|<meta(?:\s[^>]*?)?\s(?:http-equiv\s*=\s*(["']?)content-type\2(?:\s[^>]*?)?\scontent\s*=\s*["']?[^;]+(?:;[^;=]+(?:=\s*[^\s;]*)?)*?;\s*charset\s*=\s*([^"'\s;<>]+)|content\s*=\s*(["']?)[^;]+(?:;[^;=]+(?:=\s*[^\s;]*)?)*?;\s*charset\s*=\s*([^"'\s;<>]+)[^"']*?\4(?:\s[^>]*?)?\shttp-equiv\s*=\s*(["']?)content-type\6)/i.test(data)) {
+		if (/^<\?xml(?:\s[^>]*?)?\sencoding\s*=\s*["']([^"']*)|<meta(?:\s[^>]*?)?\s(?:http-equiv\s*=\s*(["']?)content-type\2(?:\s[^>]*?)?\scontent\s*=\s*["']?[^;]+(?:;[^;=]+(?:=\s*[^\s;]*)?)*?;\s*charset\s*=\s*([^"'\s;<>]+)|content\s*=\s*(["']?)[^;]+(?:;[^;=]+(?:=\s*[^\s;]*)?)*?;\s*charset\s*=\s*([^"'\s;<>]+)[^"']*?\4(?:\s[^>]*?)?\shttp-equiv\s*=\s*(["']?)content-type\6)/i.test(data)) {
 			m = RegExp.$1 || RegExp.$3 || RegExp.$5;
 			this.charset = m;
 			dump("[msim]guessed charset is " + m + "\n");

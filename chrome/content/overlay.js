@@ -87,8 +87,7 @@ var msim = {
 		this.removeGeneratedMenuItems(menu, ["msim-default-" + suffix,
 						"msim-options-" + suffix, "msim-about-" + suffix]);
 
-		for (var j = 0; j < carrierArray.length; j++) {
-			var carrier = carrierArray[j];
+		carrierArray.forEach(function(carrier) {
 			var deviceCount = pref.getIntPref("msim.devicelist." + carrier
 					+ ".count");
 			for (var i = 1; i <= deviceCount; i++) {
@@ -110,7 +109,7 @@ var msim = {
 					menu.insertBefore(menuItem, optionsSeparator);
 				}
 			}
-		}
+		});
 
 		var currentMenuId = "msim-device-" + suffix + "-"
 				+ pref.copyUnicharPref("msim.current.carrier") + "-"

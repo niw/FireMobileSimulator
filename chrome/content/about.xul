@@ -33,7 +33,7 @@
   <label value="Takahiro Horikawa &lt;horikawa.takahiro@gmail.com&gt;"/>
   <separator class="thin"/>
   <label value="&homepage;" style="font-weight: bold;"/>
-  <label onclick="openURL(this.value)" class="text-link" value="https://addons.mozilla.org/ja/firefox/addon/8519"/>
+  <label onclick="openURL(this.value)" class="text-link" value="https://addons.mozilla.org/firefox/addon/8519"/>
   <separator class="thin"/>
 </vbox>
 </groupbox>

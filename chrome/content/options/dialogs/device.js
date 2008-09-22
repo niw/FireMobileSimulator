@@ -22,17 +22,14 @@ function msim_initializeDevice() {
 		var carrierListPopup = document.createElement("menupopup")
 		carrierList.setAttribute("id", "msim.options.device.carrierlist");
 
-		var a = [""];
-		a = a.concat(carrierArray);
-		for (var i = 0; i < a.length; i++) {
-			var carrierTemp = a[i];
+		[""].concat(carrierArray).forEach(function (carrierTemp) {
 			var menuItem = document.createElement("menuitem");
 			menuItem.setAttribute("label", carrierName[carrierTemp]
 							|| stringBundle.getString("msim_selectCarrier"));
 			menuItem.setAttribute("id", carrierTemp);
 			menuItem.setAttribute("oncommand", 'carrierSelected(this)');
 			carrierListPopup.appendChild(menuItem);
-		}
+		});
 		carrierList.appendChild(carrierListPopup);
 		var r = document.getElementById("msim.options.device.carrier.row");
 		r.replaceChild(carrierList, r.lastChild);
@@ -81,8 +78,7 @@ function carrierSelected(obj) {
 
 function appendDeviceAttributeRows(parentNode, carrier, id) {
 	dump("append:" + parentNode + ":" + carrier + ":" + id + "\n");
-	for (var i = 0; i < deviceAttribute[carrier].length; i++) {
-		var a = deviceAttribute[carrier][i];
+	deviceAttribute[carrier].forEach(function (a) {
 		var elementId = "msim.options.device." + a;
 		var r = document.createElement("row");
 		var l = document.createElement("label");
@@ -101,7 +97,7 @@ function appendDeviceAttributeRows(parentNode, carrier, id) {
 		r.appendChild(l);
 		r.appendChild(t);
 		parentNode.appendChild(r);
-	}
+	});
 }
 
 function removeDeviceAttributeRows(parentNode) {
@@ -157,8 +153,7 @@ function msim_saveDevice() {
 		retVals.carrier = carrier;
 		retVals.userAgent = userAgent;
 
-		for (var i = 0; i < deviceAttribute[carrier].length; i++) {
-			var a = deviceAttribute[carrier][i];
+		deviceAttribute[carrier].forEach(function (a) {
 			var elementId = "msim.options.device." + a;
 			dump("getvalue:" + elementId + ":"
 					+ document.getElementById(elementId).value + "\n");
@@ -166,9 +161,7 @@ function msim_saveDevice() {
 					.setUnicharPref("msim.devicelist." + carrier + "." + saveId
 									+ "." + a, document
 									.getElementById(elementId).value);
-		}
-		return true;
-	} else {
-		return true;
+		});
 	}
+	return true;
 }
