@@ -1,10 +1,21 @@
-/**
- * FOMA絵文字変換ベースクラス
- * 
- * @author horikawa_t <horikawa.takahiro@gmail.com>
- * @original_author ryster <ryster@php-develop.org>
- * @license http://www.opensource.org/licenses/mit-license.php The MIT License
- */
+/* ***** BEGIN LICENSE BLOCK Version: GPL 3.0 ***** 
+ * FireMobileFimulator is a Firefox add-on that simulate web browsers of 
+ * japanese mobile phones.
+ * Copyright (C) 2008  ryster <ryster@php-develop.org>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * ***** END LICENSE BLOCK ***** */
 
 var MPC_DC = function(charset) {
 	this.charset = charset || MPC_SJIS;

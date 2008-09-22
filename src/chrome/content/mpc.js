@@ -1,16 +1,28 @@
-/**
-* ŠG•¶š•ÏŠ·ƒNƒ‰ƒX
-* @author horikawa_t <horikawa.takahiro@gmail.com>
-* @original_author   ryster <ryster@php-develop.org>
-* @license  http://www.opensource.org/licenses/mit-license.php The MIT License
-* @version  Release: 0.0.1
-*/
-//var MobilePictogramConverter = function() {};
+/* ***** BEGIN LICENSE BLOCK Version: GPL 3.0 ***** 
+ * FireMobileFimulator is a Firefox add-on that simulate web browsers of 
+ * japanese mobile phones.
+ * Copyright (C) 2008  ryster <ryster@php-develop.org>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * ***** END LICENSE BLOCK *****
+ */
+
 var MobilePictogramConverter = {
 	/**
-	* ƒ^ƒCƒv‚É‡‚í‚¹‚ÄAê—p‚ÌƒNƒ‰ƒXƒIƒuƒWƒFƒNƒg‚ğ¶¬
-	* @param string  str	 •ÏŠ·‘O•¶š—ñ
-	* @param string  carrier str‚ÌŠG•¶šƒLƒƒƒŠƒA (MPC_FROM_FOMA, MPC_FROM_EZWEB, MPC_FROM_SOFTBANK)
+	* ï¿½^ï¿½Cï¿½vï¿½Éï¿½ï¿½í‚¹ï¿½ÄAï¿½ï¿½pï¿½ÌƒNï¿½ï¿½ï¿½Xï¿½Iï¿½uï¿½Wï¿½Fï¿½Nï¿½gï¿½ğ¶ï¿½
+	* @param string  str	 ï¿½ÏŠï¿½ï¿½Oï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	* @param string  carrier strï¿½ÌŠGï¿½ï¿½ï¿½ï¿½ï¿½Lï¿½ï¿½ï¿½ï¿½ï¿½A (MPC_FROM_FOMA, MPC_FROM_EZWEB, MPC_FROM_SOFTBANK)
 	* @return mixed
 	*/
 	factory : function (carrier) {
