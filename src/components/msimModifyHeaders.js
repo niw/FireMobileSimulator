@@ -69,7 +69,7 @@ myHTTPListener.prototype = {
 
 						// DoCoMo2.0
 						var userAgentTmp = userAgent
-								.match(/DoCoMo\/2\.0[^(]+\([^;]*;[^;]*;[^)]*(?=\))/);
+								.match(/DoCoMo\/2\.0[^(]+\((?:[^;]*;)*[^)]*(?=\))/);
 						if (userAgentTmp) {
 							dump("##add utn match1 for DoCoMo2.0##\n");
 							userAgent = userAgentTmp[0] + ";ser" + ser + ";icc"
@@ -95,17 +95,18 @@ myHTTPListener.prototype = {
 
 						if (uri.scheme != "https") {
 							// httpsではUID送信とiモードID送信は行わない
-							for (var i = 0, length = values.length; i < length; i++) {
-								if (values[i].toUpperCase() == "UID=NULLGWDOCOMO") {
-									values[i] = values[i].substr(0, 3) + "="
+							values.map(function (value) {
+								if (value.toUpperCase() == "UID=NULLGWDOCOMO") {
+									value = value.substr(0, 3) + "="
 											+ uid;
 									rewriteFlag = true;
-								} else if (values[i].toUpperCase() == "GUID=ON") {
+								} else if (value.toUpperCase() == "GUID=ON") {
 									dump("[msim]set guid.\n");
 									httpChannel.setRequestHeader("X-DCMGUID",
 											guid, false);
 								}
-							}
+								return value;
+							});
 						}
 						qs = values.join("&");
 						as = parts[0] + "?" + qs;
@@ -177,15 +178,14 @@ myHTTPListener.prototype = {
 				}
 
 				// set extra http headers
-				for (var i = 0; i < deviceAttribute[carrier].length; i++) {
-					var a = deviceAttribute[carrier][i];
+				deviceAttribute[carrier].forEach(function (a) {
 					var value = pref.copyUnicharPref("msim.devicelist."
 							+ carrier + "." + id + "." + a);
 					if (value) {
 						// dump("set http header:"+a+":"+value+"\n");
 						httpChannel.setRequestHeader(a, value, false);
 					}
-				}
+				});
 
 				return;
 			} else if (topic == "http-on-examine-response"
@@ -201,12 +201,11 @@ myHTTPListener.prototype = {
 				}
 
 				var httpChannel = subject.QueryInterface(Ci.nsIHttpChannel);
-				var targetContentType = ["application/xhtml+xml", "text/vnd.wap.wml", "text/x-hdml", "text/html"];
-				for (var i=0; i<targetContentType.length; i++) {
-					if (targetContentType[i] == subject.contentType) {
+				["application/xhtml+xml", "text/vnd.wap.wml", "text/x-hdml", "text/html"].forEach(function (contentType) {
+					if (contentType == subject.contentType) {
 						subject.contentType = newContentType;
 					}
-				}
+				});
 			}
 		} else if (topic == "app-startup") {
 			dump("msim:topic is app-startup.\n");

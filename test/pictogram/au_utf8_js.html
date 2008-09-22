@@ -18,11 +18,11 @@ function a(){
 	mpc.setImagePath("../src/chrome/content/emoji");
 	mpc.charset = MPC_UTF8;
 
-	for(var i=0; i<emojis.length; i++){
-		document.write(emojis[i]+":");
-		document.write(mpc.convert(emojis[i]));
+	emojis.forEach(function (emoji) {
+		document.write(emoji+":");
+		document.write(mpc.convert(emoji));
 		document.write("<br/>");
-	}
+	});
 }
 </script>
 </body>

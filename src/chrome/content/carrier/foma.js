@@ -202,7 +202,7 @@ MPC_DC.prototype = {
 	 *            path
 	 */
 	setImagePath : function(path) {
-		path.replace(RegExp('/+$'), '');
+		path.replace(/\/+$/, '');
 		this.i_img_path = path + '/i/';
 	},
 
@@ -214,7 +214,7 @@ MPC_DC.prototype = {
 	 * @return string
 	 */
 	i_options_encode : function(dec) {
-		var buf = '<img src="' + this.i_img_path.replace(/\/+$/g, "") + '/'
+		var buf = '<img src="' + this.i_img_path.replace(/\/+$/, "") + '/'
 				+ dec + '.gif" alt="" border="0" width="12" height="12" />';
 		return buf;
 	}

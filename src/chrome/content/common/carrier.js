@@ -16,8 +16,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * ***** END LICENSE BLOCK ***** */
- 
- // キャリア別の端末の設定
+
+// キャリア別の端末の設定
 
 const DOCOMO = "DC";
 const AU = "AU";
@@ -41,7 +41,6 @@ var deviceAttribute = {
 			"x-up-devcap-screendepth", "x-up-devcap-screenpixels",
 			"x-up-devcap-softkeysize", "x-up-devcap-titlebar"],
 	SB : ["x-jphone-msname", "x-jphone-display", "x-jphone-color"]
-	,
 };
 
 function setDevice(carrier, id) {

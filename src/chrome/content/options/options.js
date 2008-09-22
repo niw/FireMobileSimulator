@@ -35,12 +35,9 @@ function msim_deleteDevice(){
 		var carrier = selectedItem.getAttribute("carrier");
 		var deletedId = parseInt(selectedItem.getAttribute("id"));
 		var prefPrefix = "msim.devicelist." + carrier + "." + deletedId + "."
-		for(var i=0; i<deviceBasicAttribute.length; i++){
-			pref.deletePref(prefPrefix+deviceBasicAttribute[i]);
-		}
-		for(var i=0; i<deviceAttribute[carrier].length; i++){
-			pref.deletePref(prefPrefix+deviceAttribute[carrier][i]);
-		}
+		deviceBasicAttribute.concat(deviceAttribute[carrier]).forEach(function(attribute){
+			pref.deletePref(prefPrefix+attribute);
+		});
 
 		//既に使われている端末だったら設定をリセット
 		if(pref.copyUnicharPref("msim.current.id") == deletedId && pref.copyUnicharPref("msim.current.carrier") == carrier){
@@ -60,12 +57,9 @@ function msim_deleteDevice(){
 			dump("[msim]Debug : Id is not the last one.Re-arrange ids.\n");
 			var sPrefPrefix = "msim.devicelist." + carrier + "." + i + ".";
 			var ePrefPrefix = "msim.devicelist." + carrier + "." + (i-1) + ".";
-			for(var j=0; j<deviceBasicAttribute.length; j++){
-				pref.setUnicharPref(ePrefPrefix+deviceBasicAttribute[j], pref.copyUnicharPref(sPrefPrefix+deviceBasicAttribute[j]));
-			}
-			for(var j=0; j<deviceAttribute[carrier].length; j++){
-				pref.setUnicharPref(ePrefPrefix+deviceAttribute[carrier][j], pref.copyUnicharPref(sPrefPrefix+deviceAttribute[carrier][j]));
-			}
+			deviceBasicAttribute.contcat(deviceAttribute[carrier]).forEach(function(attribute){
+				pref.setUnicharPref(ePrefPrefix+attribute, pref.copyUnicharPref(sPrefPrefix+attribute));
+			});
 		}
 		pref.setIntPref("msim.devicelist." + carrier + ".count", count-1);
 
@@ -131,8 +125,7 @@ function msim_initializeDevices(){
 		deviceBox.removeChild(deviceBox.lastChild);
 	}
 
-	for(var j = 0; j < carrierArray.length; j++){
-		var carrier = carrierArray[j];
+	carrierArray.forEach(function(carrier){
 
 		deviceCount = pref.getIntPref("msim.devicelist." + carrier + ".count");
 		for(var i = 1; i <= deviceCount; i++){
@@ -144,7 +137,7 @@ function msim_initializeDevices(){
 				listItem.setAttribute("id", i);
 			}
 		}
-	}
+	});
 
 	msim_deviceSelected();
 }
@@ -233,23 +226,19 @@ function msim_deviceSelected(){
 
 function clearAllDeviceSettings(){
 	if(confirm(document.getElementById("msim-string-bundle").getString("msim_clearAllConfirmation"))){
-		for(var i=0; i<carrierArray.length; i++){
-			var carrier = carrierArray[i];
+		carrierArray.forEach(function(carrier){
 			dump("target carrier is "+carrier+"\n");
 			pref.deletePref("msim.devicelist." + carrier + ".count");
 			var count = pref.getIntPref("msim.devicelist." + carrier + ".count");
-			for(var j=1; j<=count; j++){
-				var prefPrefix = "msim.devicelist." + carrier + "." + j + ".";
+			for(var i=1; i<=count; i++){
+				var prefPrefix = "msim.devicelist." + carrier + "." + i + ".";
 
 				dump("target prefix is "+prefPrefix+"\n");
-				for(var k=0; k<deviceBasicAttribute.length; k++){
-					pref.deletePref(prefPrefix+deviceBasicAttribute[k]);
-				}
-				for(var k=0; k<deviceAttribute[carrier].length; k++){
-					pref.deletePref(prefPrefix+deviceAttribute[carrier][k]);
-				}
+				deviceBasicAttribute.concat(deviceAttribute[carrier]).forEach(function(attribute){
+					pref.deletePref(prefPrefix+attribute);
+				});
 			}
-		}
+		});
 
 		pref.deletePref("msim.current.carrier");
 		pref.deletePref("msim.current.device");

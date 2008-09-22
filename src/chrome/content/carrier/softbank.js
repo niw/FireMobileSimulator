@@ -172,7 +172,7 @@ MPC_SB.prototype =
 	 */
 	setImagePath : function(path)
 	{
-		path.replace(RegExp('/+$'),'');
+		path.replace(/\/+$/, '');
 		this.s_img_path = path+'/s/';
 	},
 
@@ -185,7 +185,7 @@ MPC_SB.prototype =
 	s_options_encode : function(dec)
 	{
 		var width = (dec >= 20828 && dec <= 20830) ? 18 : 15;
-		var buf = '<img src="'+this.s_img_path.replace(/\/+$/g, "")+'/'+dec+'.gif" alt="" border="0" width="'+width+'" height="15" />';
+		var buf = '<img src="'+this.s_img_path.replace(/\/+$/, "")+'/'+dec+'.gif" alt="" border="0" width="'+width+'" height="15" />';
 		return buf;
 	}
 };
