@@ -46,11 +46,11 @@ function msim_initializeDevice() {
 		id = window.arguments[2];
 		dump(carrier + "\n");
 		dump(id + "\n");
-		document.getElementById("msim.options.device.device").value = pref
+		document.getElementById("msim.options.device.device").value = msim_pref
 				.copyUnicharPref("msim.devicelist." + carrier + "." + id
 						+ ".device");
 		document.getElementById("msim.options.device.carrier").value = carrierName[carrier];
-		document.getElementById("msim.options.device.useragent").value = pref
+		document.getElementById("msim.options.device.useragent").value = msim_pref
 				.copyUnicharPref("msim.devicelist." + carrier + "." + id
 						+ ".useragent");
 
@@ -93,9 +93,9 @@ function appendDeviceAttributeRows(parentNode, carrier, id) {
 		t.setAttribute("id", elementId);
 		t.setAttribute("size", 50);
 		if (id
-				&& pref.copyUnicharPref("msim.devicelist." + carrier + "." + id
+				&& msim_pref.copyUnicharPref("msim.devicelist." + carrier + "." + id
 						+ "." + a)) {
-			t.setAttribute("value", pref.copyUnicharPref("msim.devicelist."
+			t.setAttribute("value", msim_pref.copyUnicharPref("msim.devicelist."
 							+ carrier + "." + id + "." + a));
 		}
 		r.appendChild(l);
@@ -124,10 +124,10 @@ function msim_saveDevice() {
 		if (msim_windowType == "add") {
 			// carrier =
 			// document.getElementById("msim.options.device.carrierlist").selectedItem.getAttribute("id");
-			saveId = pref.getIntPref("msim.devicelist." + carrier + ".count")
+			saveId = msim_pref.getIntPref("msim.devicelist." + carrier + ".count")
 					+ 1;
-			pref.setIntPref("msim.devicelist." + carrier + ".count", saveId);
-			pref.setUnicharPref("msim.devicelist." + carrier + "." + saveId
+			msim_pref.setIntPref("msim.devicelist." + carrier + ".count", saveId);
+			msim_pref.setUnicharPref("msim.devicelist." + carrier + "." + saveId
 							+ ".carrier", carrier);
 		} else {
 			saveId = id;
@@ -147,9 +147,9 @@ function msim_saveDevice() {
 					.getString("msim_editDeviceRequirementValidation"));
 			return false;
 		}
-		pref.setUnicharPref("msim.devicelist." + carrier + "." + saveId
+		msim_pref.setUnicharPref("msim.devicelist." + carrier + "." + saveId
 						+ ".device", deviceName);
-		pref.setUnicharPref("msim.devicelist." + carrier + "." + saveId
+		msim_pref.setUnicharPref("msim.devicelist." + carrier + "." + saveId
 						+ ".useragent", userAgent);
 
 		retVals.deviceName = deviceName;
@@ -162,7 +162,7 @@ function msim_saveDevice() {
 			var elementId = "msim.options.device." + a;
 			dump("getvalue:" + elementId + ":"
 					+ document.getElementById(elementId).value + "\n");
-			pref
+			msim_pref
 					.setUnicharPref("msim.devicelist." + carrier + "." + saveId
 									+ "." + a, document
 									.getElementById(elementId).value);

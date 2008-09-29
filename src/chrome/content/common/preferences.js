@@ -17,10 +17,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * ***** END LICENSE BLOCK ***** */
 
-var jsLoader = Components.classes["@mozilla.org/moz/jssubscript-loader;1"].getService(Components.interfaces.mozIJSSubScriptLoader);
-jsLoader.loadSubScript("chrome://global/content/nsUserSettings.js");
+var msim_jsLoader = Components.classes["@mozilla.org/moz/jssubscript-loader;1"].getService(Components.interfaces.mozIJSSubScriptLoader);
+msim_jsLoader.loadSubScript("chrome://global/content/nsUserSettings.js");
 
-var pref = {
+var msim_pref = {
 	__proto__ : nsPreferences,
 
 	get mPrefService2()

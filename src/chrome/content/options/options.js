@@ -36,24 +36,24 @@ function msim_deleteDevice(){
 		var deletedId = parseInt(selectedItem.getAttribute("id"));
 		var prefPrefix = "msim.devicelist." + carrier + "." + deletedId + "."
 		for(var i=0; i<deviceBasicAttribute.length; i++){
-			pref.deletePref(prefPrefix+deviceBasicAttribute[i]);
+			msim_pref.deletePref(prefPrefix+deviceBasicAttribute[i]);
 		}
 		for(var i=0; i<deviceAttribute[carrier].length; i++){
-			pref.deletePref(prefPrefix+deviceAttribute[carrier][i]);
+			msim_pref.deletePref(prefPrefix+deviceAttribute[carrier][i]);
 		}
 
 		//既に使われている端末だったら設定をリセット
-		if(pref.copyUnicharPref("msim.current.id") == deletedId && pref.copyUnicharPref("msim.current.carrier") == carrier){
+		if(msim_pref.copyUnicharPref("msim.current.id") == deletedId && msim_pref.copyUnicharPref("msim.current.carrier") == carrier){
 			dump("[msim]Debug : This device is used. Reset your settings.\n");
-			pref.deletePref("msim.current.carrier");
-			pref.deletePref("msim.current.device");
-			pref.deletePref("general.useragent.override");
-			pref.deletePref("msim.current.useragent");
-			pref.deletePref("msim.current.id");
+			msim_pref.deletePref("msim.current.carrier");
+			msim_pref.deletePref("msim.current.device");
+			msim_pref.deletePref("general.useragent.override");
+			msim_pref.deletePref("msim.current.useragent");
+			msim_pref.deletePref("msim.current.id");
 		}
 
 		//各端末のidを再計算
-		var count = pref.getIntPref("msim.devicelist." + carrier + ".count");
+		var count = msim_pref.getIntPref("msim.devicelist." + carrier + ".count");
 		dump(deletedId+":"+count+"\n");
 		dump((deletedId+1)+":"+count+"\n");
 		for(var i=deletedId+1; i<=count; i++){
@@ -61,13 +61,13 @@ function msim_deleteDevice(){
 			var sPrefPrefix = "msim.devicelist." + carrier + "." + i + ".";
 			var ePrefPrefix = "msim.devicelist." + carrier + "." + (i-1) + ".";
 			for(var j=0; j<deviceBasicAttribute.length; j++){
-				pref.setUnicharPref(ePrefPrefix+deviceBasicAttribute[j], pref.copyUnicharPref(sPrefPrefix+deviceBasicAttribute[j]));
+				msim_pref.setUnicharPref(ePrefPrefix+deviceBasicAttribute[j], msim_pref.copyUnicharPref(sPrefPrefix+deviceBasicAttribute[j]));
 			}
 			for(var j=0; j<deviceAttribute[carrier].length; j++){
-				pref.setUnicharPref(ePrefPrefix+deviceAttribute[carrier][j], pref.copyUnicharPref(sPrefPrefix+deviceAttribute[carrier][j]));
+				msim_pref.setUnicharPref(ePrefPrefix+deviceAttribute[carrier][j], msim_pref.copyUnicharPref(sPrefPrefix+deviceAttribute[carrier][j]));
 			}
 		}
-		pref.setIntPref("msim.devicelist." + carrier + ".count", count-1);
+		msim_pref.setIntPref("msim.devicelist." + carrier + ".count", count-1);
 
 		deviceBox.removeChild(selectedItem);
 	}
@@ -83,7 +83,12 @@ function msim_editDevice(){
 		var carrier = selectedItem.getAttribute("carrier");
 		var id = selectedItem.getAttribute("id");
 		if(window.openDialog("chrome://msim/content/options/dialogs/device.xul", "msim-device-dialog", "centerscreen,chrome,modal,resizable", "edit", carrier, id, retVals)){
-			setDevice(carrier, id);
+			if(retVals.id && retVals.carrier){
+			//既に使われている端末だったら設定をリセット
+				if(msim_pref.copyUnicharPref("msim.current.id") == retVals.id && msim_pref.copyUnicharPref("msim.current.carrier") == retVals.carrier){
+					setDevice(retVals.carrier, retVals.id);
+				}			
+			}
 		}
 	}else{
 		dump("[msim]Error : Device is not selected.\n");
@@ -110,13 +115,13 @@ function msim_initializeOptions(){
 function msim_initializeGeneral()
 {
 	var pageDocument = document.getElementById("msim-options-iframe").contentDocument;
-	pageDocument.getElementById("msim-textbox-docomo-uid").setAttribute("value",pref.copyUnicharPref("msim.config.DC.uid"));
-	pageDocument.getElementById("msim-textbox-docomo-ser").setAttribute("value",pref.copyUnicharPref("msim.config.DC.ser"));
-	pageDocument.getElementById("msim-textbox-docomo-icc").setAttribute("value",pref.copyUnicharPref("msim.config.DC.icc"));
-	pageDocument.getElementById("msim-textbox-docomo-guid").setAttribute("value",pref.copyUnicharPref("msim.config.DC.guid"));
-	pageDocument.getElementById("msim-textbox-au-uid").setAttribute("value",pref.copyUnicharPref("msim.config.AU.uid"));
-	pageDocument.getElementById("msim-textbox-softbank-uid").setAttribute("value",pref.copyUnicharPref("msim.config.SB.uid"));
-	pageDocument.getElementById("msim-textbox-softbank-serial").setAttribute("value",pref.copyUnicharPref("msim.config.SB.serial"));
+	pageDocument.getElementById("msim-textbox-docomo-uid").setAttribute("value",msim_pref.copyUnicharPref("msim.config.DC.uid"));
+	pageDocument.getElementById("msim-textbox-docomo-ser").setAttribute("value",msim_pref.copyUnicharPref("msim.config.DC.ser"));
+	pageDocument.getElementById("msim-textbox-docomo-icc").setAttribute("value",msim_pref.copyUnicharPref("msim.config.DC.icc"));
+	pageDocument.getElementById("msim-textbox-docomo-guid").setAttribute("value",msim_pref.copyUnicharPref("msim.config.DC.guid"));
+	pageDocument.getElementById("msim-textbox-au-uid").setAttribute("value",msim_pref.copyUnicharPref("msim.config.AU.uid"));
+	pageDocument.getElementById("msim-textbox-softbank-uid").setAttribute("value",msim_pref.copyUnicharPref("msim.config.SB.uid"));
+	pageDocument.getElementById("msim-textbox-softbank-serial").setAttribute("value",msim_pref.copyUnicharPref("msim.config.SB.serial"));
 }
 
 // Initializes the devices page
@@ -134,10 +139,10 @@ function msim_initializeDevices(){
 	for(var j = 0; j < carrierArray.length; j++){
 		var carrier = carrierArray[j];
 
-		deviceCount = pref.getIntPref("msim.devicelist." + carrier + ".count");
+		deviceCount = msim_pref.getIntPref("msim.devicelist." + carrier + ".count");
 		for(var i = 1; i <= deviceCount; i++){
-			var device = pref.copyUnicharPref("msim.devicelist." + carrier + "." + i + ".device");
-			var useragent = pref.copyUnicharPref("msim.devicelist." + carrier + "." + i + ".useragent");
+			var device = msim_pref.copyUnicharPref("msim.devicelist." + carrier + "." + i + ".device");
+			var useragent = msim_pref.copyUnicharPref("msim.devicelist." + carrier + "." + i + ".useragent");
 			if(device){
 				var listItem = deviceBox.appendItem(carrier + ":" + device, useragent);
 				listItem.setAttribute("carrier", carrier);
@@ -159,17 +164,17 @@ function msim_saveOptions(){
 
 	// Loop through the boolean options
 	for(option in msim_optionsDataBoolean){
-		pref.setBoolPref(option, msim_optionsDataBoolean[option]);
+		msim_pref.setBoolPref(option, msim_optionsDataBoolean[option]);
 	}
 
 	// Loop through the integer options
 	for(option in msim_optionsDataInteger){
-		pref.setIntPref(option, msim_optionsDataInteger[option]);
+		msim_pref.setIntPref(option, msim_optionsDataInteger[option]);
 	}
 
 	// Loop through the string options
 	for(option in msim_optionsDataString){
-		pref.setUnicharPref(option, msim_optionsDataString[option]);
+		msim_pref.setUnicharPref(option, msim_optionsDataString[option]);
 	}
 }
 
@@ -189,11 +194,11 @@ function msim_storeOptions(){
 		msim_optionsDataString["msim.config.AU.uid"]    = pageDocument.getElementById("msim-textbox-au-uid").value;
 		msim_optionsDataString["msim.config.SB.uid"]    = pageDocument.getElementById("msim-textbox-softbank-uid").value;
 		msim_optionsDataString["msim.config.SB.serial"] = pageDocument.getElementById("msim-textbox-softbank-serial").value;
-		var carrier = pref.copyUnicharPref("msim.current.carrier");
+		var carrier = msim_pref.copyUnicharPref("msim.current.carrier");
 		if(carrier == SOFTBANK){
 			dump("[msim]Debug : Current Carrier is SoftBank. Replace User-Agent.\n");
-			var id = pref.copyUnicharPref("msim.current.id");
-			var useragent = pref.copyUnicharPref("msim.devicelist."+carrier+"."+id+".useragent");
+			var id = msim_pref.copyUnicharPref("msim.current.id");
+			var useragent = msim_pref.copyUnicharPref("msim.devicelist."+carrier+"."+id+".useragent");
 			var newUserAgent = getSoftBankUserAgent(useragent, msim_optionsDataString["msim.config.SB.serial"]);
 			msim_optionsDataString["general.useragent.override"] = newUserAgent;
 			msim_optionsDataString["msim.current.useragent"] = newUserAgent;
@@ -236,26 +241,26 @@ function clearAllDeviceSettings(){
 		for(var i=0; i<carrierArray.length; i++){
 			var carrier = carrierArray[i];
 			dump("target carrier is "+carrier+"\n");
-			pref.deletePref("msim.devicelist." + carrier + ".count");
-			var count = pref.getIntPref("msim.devicelist." + carrier + ".count");
+			msim_pref.deletePref("msim.devicelist." + carrier + ".count");
+			var count = msim_pref.getIntPref("msim.devicelist." + carrier + ".count");
 			for(var j=1; j<=count; j++){
 				var prefPrefix = "msim.devicelist." + carrier + "." + j + ".";
 
 				dump("target prefix is "+prefPrefix+"\n");
 				for(var k=0; k<deviceBasicAttribute.length; k++){
-					pref.deletePref(prefPrefix+deviceBasicAttribute[k]);
+					msim_pref.deletePref(prefPrefix+deviceBasicAttribute[k]);
 				}
 				for(var k=0; k<deviceAttribute[carrier].length; k++){
-					pref.deletePref(prefPrefix+deviceAttribute[carrier][k]);
+					msim_pref.deletePref(prefPrefix+deviceAttribute[carrier][k]);
 				}
 			}
 		}
 
-		pref.deletePref("msim.current.carrier");
-		pref.deletePref("msim.current.device");
-		pref.deletePref("general.useragent.override");
-		pref.deletePref("msim.current.useragent");
-		pref.deletePref("msim.current.id");
+		msim_pref.deletePref("msim.current.carrier");
+		msim_pref.deletePref("msim.current.device");
+		msim_pref.deletePref("general.useragent.override");
+		msim_pref.deletePref("msim.current.useragent");
+		msim_pref.deletePref("msim.current.id");
 
 		//TODO:ツールバー上のiconをupdate
 		//parent.msim.resetDevice();
@@ -267,19 +272,19 @@ function clearAllDeviceSettings(){
 // Initializes the general page
 function msim_initializeGps(){
 	var pageDocument = document.getElementById("msim-options-iframe").contentDocument;
-	pageDocument.getElementById("msim-textbox-docomo-gps-areacode").setAttribute("value",pref.copyUnicharPref("msim.config.DC.gps.areacode"));
-	pageDocument.getElementById("msim-textbox-docomo-gps-areaname").setAttribute("value",pref.copyUnicharPref("msim.config.DC.gps.areaname"));
-	pageDocument.getElementById("msim-textbox-docomo-gps-lat").setAttribute("value",pref.copyUnicharPref("msim.config.DC.gps.lat"));
-	pageDocument.getElementById("msim-textbox-docomo-gps-lon").setAttribute("value",pref.copyUnicharPref("msim.config.DC.gps.lon"));
-	pageDocument.getElementById("msim-textbox-docomo-gps-alt").setAttribute("value",pref.copyUnicharPref("msim.config.DC.gps.alt"));
-	pageDocument.getElementById("msim-textbox-au-gps-lat").setAttribute("value",pref.copyUnicharPref("msim.config.AU.gps.lat"));
-	pageDocument.getElementById("msim-textbox-au-gps-lon").setAttribute("value",pref.copyUnicharPref("msim.config.AU.gps.lon"));
+	pageDocument.getElementById("msim-textbox-docomo-gps-areacode").setAttribute("value",msim_pref.copyUnicharPref("msim.config.DC.gps.areacode"));
+	pageDocument.getElementById("msim-textbox-docomo-gps-areaname").setAttribute("value",msim_pref.copyUnicharPref("msim.config.DC.gps.areaname"));
+	pageDocument.getElementById("msim-textbox-docomo-gps-lat").setAttribute("value",msim_pref.copyUnicharPref("msim.config.DC.gps.lat"));
+	pageDocument.getElementById("msim-textbox-docomo-gps-lon").setAttribute("value",msim_pref.copyUnicharPref("msim.config.DC.gps.lon"));
+	pageDocument.getElementById("msim-textbox-docomo-gps-alt").setAttribute("value",msim_pref.copyUnicharPref("msim.config.DC.gps.alt"));
+	pageDocument.getElementById("msim-textbox-au-gps-lat").setAttribute("value",msim_pref.copyUnicharPref("msim.config.AU.gps.lat"));
+	pageDocument.getElementById("msim-textbox-au-gps-lon").setAttribute("value",msim_pref.copyUnicharPref("msim.config.AU.gps.lon"));
 }
 
 function msim_initializePictogram(){
 	dump("[msim]initializePictogram.\n");
 	var pageDocument = document.getElementById("msim-options-iframe").contentDocument;
-	pageDocument.getElementById("msim-textbox-docomo-pictogram-enabled").checked = pref.getBoolPref("msim.config.DC.pictogram.enabled");
-	pageDocument.getElementById("msim-textbox-au-pictogram-enabled").checked = pref.getBoolPref("msim.config.AU.pictogram.enabled");
-	pageDocument.getElementById("msim-textbox-softbank-pictogram-enabled").checked = pref.getBoolPref("msim.config.SB.pictogram.enabled");
+	pageDocument.getElementById("msim-textbox-docomo-pictogram-enabled").checked = msim_pref.getBoolPref("msim.config.DC.pictogram.enabled");
+	pageDocument.getElementById("msim-textbox-au-pictogram-enabled").checked = msim_pref.getBoolPref("msim.config.AU.pictogram.enabled");
+	pageDocument.getElementById("msim-textbox-softbank-pictogram-enabled").checked = msim_pref.getBoolPref("msim.config.SB.pictogram.enabled");
 }

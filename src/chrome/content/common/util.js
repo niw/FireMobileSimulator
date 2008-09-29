@@ -215,7 +215,7 @@ function getHiddenTag(params){
 	var r = "";
 	for (var i in params) {
 		if(i.toUpperCase() == "UID" && params[i].toUpperCase() == "NULLGWDOCOMO"){
-			params[i] = pref.copyUnicharPref("msim.config.DC.uid");
+			params[i] = msim_pref.copyUnicharPref("msim.config.DC.uid");
 		}
 		r += '<input type="hidden" name="'+i+'" value="'+params[i]+'" />\n';
 	}

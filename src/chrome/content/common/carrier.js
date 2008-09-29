@@ -55,26 +55,26 @@ function setDevice(carrier, id) {
 	}
 
 	var pref_prefix = "msim.devicelist." + carrier + "." + id;
-	pref.setUnicharPref("msim.current.carrier", pref
+	msim_pref.setUnicharPref("msim.current.carrier", msim_pref
 					.copyUnicharPref(pref_prefix + ".carrier"));
-	pref.setUnicharPref("msim.current.device", pref.copyUnicharPref(pref_prefix
+	msim_pref.setUnicharPref("msim.current.device", msim_pref.copyUnicharPref(pref_prefix
 					+ ".device"));
 
-	var useragent = pref.copyUnicharPref(pref_prefix + ".useragent");
+	var useragent = msim_pref.copyUnicharPref(pref_prefix + ".useragent");
 	if (SOFTBANK == carrier) {
-		useragent = getSoftBankUserAgent(useragent, pref
+		useragent = getSoftBankUserAgent(useragent, msim_pref
 						.copyUnicharPref("msim.config.SB.serial"));
 	}
 
-	pref.setUnicharPref("general.useragent.override", useragent);
-	pref.setUnicharPref("msim.current.useragent", useragent);
-	pref.setUnicharPref("msim.current.id", id);
+	msim_pref.setUnicharPref("general.useragent.override", useragent);
+	msim_pref.setUnicharPref("msim.current.useragent", useragent);
+	msim_pref.setUnicharPref("msim.current.id", id);
 
-	msim.updateIcon();
+	if(msim) msim.updateIcon();
 };
 
 function getSoftBankUserAgent(useragent, serial) {
-	var notifySerial = pref.getBoolPref("msim.config.SB.notifyserial");
+	var notifySerial = msim_pref.getBoolPref("msim.config.SB.notifyserial");
 	if (true == notifySerial) {
 		useragent = useragent.replace("[/Serial]", "/" + serial);
 	} else {
