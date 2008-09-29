@@ -74,7 +74,7 @@ MsimStreamConverter.prototype.onStopRequest = function(aRequest, aContext,
 		aStatusCode) {
 	dump("[msim]onStopRequest\n");
 
-	var carrier = pref.copyUnicharPref("msim.current.carrier");
+	var carrier = msim_pref.copyUnicharPref("msim.current.carrier");
 
 	//絵文字変換
 	dump("[msim]convert pictogram in msimStreamConverter.js\n");

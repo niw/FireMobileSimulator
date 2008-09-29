@@ -27,10 +27,10 @@ function openiareaInit(params){
 	var arg2params = arg2 ? getParamsFromQuery(unescape(arg2)) : null;
 
 	var openiareaBody = document.getElementById("openiarea_body");
-	var areaname = pref.copyUnicharPref("msim.config.DC.gps.areaname");
-	var areacode = pref.copyUnicharPref("msim.config.DC.gps.areacode");
-	var lat = pref.copyUnicharPref("msim.config.DC.gps.lat");
-	var lon = pref.copyUnicharPref("msim.config.DC.gps.lon");
+	var areaname = msim_pref.copyUnicharPref("msim.config.DC.gps.areaname");
+	var areacode = msim_pref.copyUnicharPref("msim.config.DC.gps.areacode");
+	var lat = msim_pref.copyUnicharPref("msim.config.DC.gps.lat");
+	var lon = msim_pref.copyUnicharPref("msim.config.DC.gps.lon");
 
 	if(!posinfo){
 		//エリアコードのみ

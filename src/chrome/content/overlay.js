@@ -37,10 +37,10 @@ var msim = {
 					true);
 		}
 
-		var initialized = pref.getBoolPref("msim.config.initialized");
+		var initialized = msim_pref.getBoolPref("msim.config.initialized");
 		if (!initialized) {
 			// 何か初期化処理をしたい場合はここに記載
-			// pref.setBoolPref("msim.config.initialized", true);
+			// msim_pref.setBoolPref("msim.config.initialized", true);
 		}
 		this.updateIcon();
 	},
@@ -89,14 +89,14 @@ var msim = {
 
 		for (var j = 0; j < carrierArray.length; j++) {
 			var carrier = carrierArray[j];
-			var deviceCount = pref.getIntPref("msim.devicelist." + carrier
+			var deviceCount = msim_pref.getIntPref("msim.devicelist." + carrier
 					+ ".count");
 			for (var i = 1; i <= deviceCount; i++) {
 				var menuItem = document.createElement("menuitem");
 
-				var device = pref.copyUnicharPref("msim.devicelist." + carrier
+				var device = msim_pref.copyUnicharPref("msim.devicelist." + carrier
 						+ "." + i + ".device");
-				var useragent = pref.copyUnicharPref("msim.devicelist."
+				var useragent = msim_pref.copyUnicharPref("msim.devicelist."
 						+ carrier + "." + i + ".useragent");
 
 				if (device) {
@@ -113,8 +113,8 @@ var msim = {
 		}
 
 		var currentMenuId = "msim-device-" + suffix + "-"
-				+ pref.copyUnicharPref("msim.current.carrier") + "-"
-				+ pref.copyUnicharPref("msim.current.id");
+				+ msim_pref.copyUnicharPref("msim.current.carrier") + "-"
+				+ msim_pref.copyUnicharPref("msim.current.id");
 		var currentMenu = document.getElementById(currentMenuId);
 		if (!currentMenu) {
 			currentMenu = document.getElementById("msim-default-" + suffix);
@@ -148,11 +148,11 @@ var msim = {
 
 	msim_resetDevice : function(e) {
 		dump("[msim]resetDevice.\n");
-		pref.deletePref("msim.current.carrier");
-		pref.deletePref("msim.current.device");
-		pref.deletePref("general.useragent.override");
-		pref.deletePref("msim.current.useragent");
-		pref.deletePref("msim.current.id");
+		msim_pref.deletePref("msim.current.carrier");
+		msim_pref.deletePref("msim.current.device");
+		msim_pref.deletePref("general.useragent.override");
+		msim_pref.deletePref("msim.current.useragent");
+		msim_pref.deletePref("msim.current.id");
 
 		this.updateIcon();
 	},
@@ -169,7 +169,7 @@ var msim = {
 
 	msim_BrowserOnLoad : function(objEvent) {
 
-		var carrier = pref.copyUnicharPref("msim.current.carrier");
+		var carrier = msim_pref.copyUnicharPref("msim.current.carrier");
 
 		if (carrier) {
 			var ndDocument = objEvent.originalTarget;
@@ -239,7 +239,7 @@ var msim = {
 					}
 				}
 
-				var pictogramConverterEnabled = pref.getBoolPref("msim.config."+carrier+".pictogram.enabled")
+				var pictogramConverterEnabled = msim_pref.getBoolPref("msim.config."+carrier+".pictogram.enabled")
 				if (pictogramConverterEnabled){
 					dump("[msim]convert pictogram in overlay.js\n");
 					var mpc = MobilePictogramConverter.factory(carrier);
@@ -268,7 +268,7 @@ var msim = {
 					dump("[msim]click utn\n");
 					if (true == confirm(msim.strings
 							.getString("msim_utnConfirmation"))) {
-						pref.setBoolPref("msim.temp.utnflag", true);
+						msim_pref.setBoolPref("msim.temp.utnflag", true);
 					}
 					return true;
 				};
@@ -277,15 +277,15 @@ var msim = {
 					dump("[msim]click lcs\n");
 					if (true == confirm(msim.strings
 							.getString("msim_lcsConfirmation"))) {
-						pref.setBoolPref("msim.temp.lcsflag", true);
+						msim_pref.setBoolPref("msim.temp.lcsflag", true);
 						return true;
 					} else {
 						return false;
 					}
 				};
 
-				pref.setBoolPref("msim.temp.utnflag", false);
-				pref.setBoolPref("msim.temp.lcsflag", false);
+				msim_pref.setBoolPref("msim.temp.utnflag", false);
+				msim_pref.setBoolPref("msim.temp.lcsflag", false);
 
 				var anchorTags = ndDocument.getElementsByTagName('a');
 				for (var i = 0; i < anchorTags.length; i++) {
@@ -343,7 +343,7 @@ var msim = {
 							if (key && value && key.toUpperCase() == "UID"
 									&& value.toUpperCase() == "NULLGWDOCOMO") {
 								dump("replace uid\n");
-								var uid = pref
+								var uid = msim_pref
 										.copyUnicharPref("msim.config.DC.uid");
 								inputTag.value = uid;
 							}
@@ -381,7 +381,7 @@ var msim = {
 		var msimButton = document.getElementById("msim-button");
 		var menu       = document.getElementById("msim-menu");
 		if (msimButton) {
-			var carrier = pref.copyUnicharPref("msim.current.carrier");
+			var carrier = msim_pref.copyUnicharPref("msim.current.carrier");
 			if (!carrier) {
 				dump("[msim]set default\n");
 				msimButton.removeAttribute("device");
@@ -391,7 +391,7 @@ var msim = {
 			}
 		}
 		if (menu) {
-			var carrier = pref.copyUnicharPref("msim.current.carrier");
+			var carrier = msim_pref.copyUnicharPref("msim.current.carrier");
 			if (!carrier) {
 				dump("[msim]set default\n");
 				menu.removeAttribute("device");

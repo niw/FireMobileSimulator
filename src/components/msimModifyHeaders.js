@@ -37,15 +37,15 @@ function myHTTPListener() {
 myHTTPListener.prototype = {
 
 	observe : function(subject, topic, data) {
-		var carrier = pref.copyUnicharPref("msim.current.carrier");
+		var carrier = msim_pref.copyUnicharPref("msim.current.carrier");
 		if (carrier) {
 
-			var registFlag = pref.getBoolPref("msim.config.regist.enabled");
+			var registFlag = msim_pref.getBoolPref("msim.config.regist.enabled");
 
 			if (topic == "http-on-modify-request") {
 				var httpChannel = subject.QueryInterface(Ci.nsIHttpChannel);
-				var device = pref.copyUnicharPref("msim.current.device");
-				var id = pref.copyUnicharPref("msim.current.id");
+				var device = msim_pref.copyUnicharPref("msim.current.device");
+				var id = msim_pref.copyUnicharPref("msim.current.id");
 
 				httpChannel.setRequestHeader("x-msim-use", "on", false);
 
@@ -56,15 +56,15 @@ myHTTPListener.prototype = {
 					var as = uri.asciiSpec;
 					var qs = "";
 
-					var uid = pref.copyUnicharPref("msim.config.DC.uid");
-					var ser = pref.copyUnicharPref("msim.config.DC.ser");
-					var icc = pref.copyUnicharPref("msim.config.DC.icc");
-					var guid = pref.copyUnicharPref("msim.config.DC.guid");
+					var uid = msim_pref.copyUnicharPref("msim.config.DC.uid");
+					var ser = msim_pref.copyUnicharPref("msim.config.DC.ser");
+					var icc = msim_pref.copyUnicharPref("msim.config.DC.icc");
+					var guid = msim_pref.copyUnicharPref("msim.config.DC.guid");
 
 					// UTN
-					var utnFlag = pref.getBoolPref("msim.temp.utnflag");
+					var utnFlag = msim_pref.getBoolPref("msim.temp.utnflag");
 					if (true == utnFlag) {
-						var userAgent = pref
+						var userAgent = msim_pref
 								.copyUnicharPref("msim.current.useragent");
 
 						// DoCoMo2.0
@@ -111,14 +111,14 @@ myHTTPListener.prototype = {
 						as = parts[0] + "?" + qs;
 					}
 
-					var lcsFlag = pref.getBoolPref("msim.temp.lcsflag");
+					var lcsFlag = msim_pref.getBoolPref("msim.temp.lcsflag");
 					if (true == lcsFlag) {
 						dump("[msim]add GPS info for DoCoMo\n");
-						var lat = pref
+						var lat = msim_pref
 								.copyUnicharPref("msim.config.DC.gps.lat");
-						var lon = pref
+						var lon = msim_pref
 								.copyUnicharPref("msim.config.DC.gps.lon");
-						var alt = pref
+						var alt = msim_pref
 								.copyUnicharPref("msim.config.DC.gps.alt");
 						if (parts.length >= 2) {
 							if (parts[1]) {
@@ -130,7 +130,7 @@ myHTTPListener.prototype = {
 							as += "?lat="+lat+"&lon="+lon+"&geo=wgs84&xacc=3&alt="+alt;
 						}
 						rewriteFlag = true;
-						pref.setBoolPref("msim.temp.lcsflag", false);
+						msim_pref.setBoolPref("msim.temp.lcsflag", false);
 					}
 
 					// DoCoMo端末はCookie送信を行わない
@@ -151,11 +151,11 @@ myHTTPListener.prototype = {
 						rewriteURI(subject, as);
 					}
 				} else if (carrier == "SB") {
-					httpChannel.setRequestHeader("x-jphone-uid", pref
+					httpChannel.setRequestHeader("x-jphone-uid", msim_pref
 									.copyUnicharPref("msim.config.SB.uid"),
 							false);
 				} else if (carrier == "AU") {
-					httpChannel.setRequestHeader("x-up-subno", pref
+					httpChannel.setRequestHeader("x-up-subno", msim_pref
 									.copyUnicharPref("msim.config.AU.uid"),
 							false);
 
@@ -179,7 +179,7 @@ myHTTPListener.prototype = {
 				// set extra http headers
 				for (var i = 0; i < deviceAttribute[carrier].length; i++) {
 					var a = deviceAttribute[carrier][i];
-					var value = pref.copyUnicharPref("msim.devicelist."
+					var value = msim_pref.copyUnicharPref("msim.devicelist."
 							+ carrier + "." + id + "." + a);
 					if (value) {
 						// dump("set http header:"+a+":"+value+"\n");
@@ -193,7 +193,7 @@ myHTTPListener.prototype = {
 				// cacheから読み込まれるときは、http-on-examine-merged-responseがnotifyされる
 				// dump("msim:topic is "+topic+"\n");
 				var newContentType = "";
-				var pictogramConverterEnabled = pref.getBoolPref("msim.config."+carrier+".pictogram.enabled");
+				var pictogramConverterEnabled = msim_pref.getBoolPref("msim.config."+carrier+".pictogram.enabled");
 				if (pictogramConverterEnabled) {
 					newContentType = "text/msim.html";
 				} else {
