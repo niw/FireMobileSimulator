@@ -1,21 +1,22 @@
-/* ***** BEGIN LICENSE BLOCK Version: GPL 3.0 ***** 
- * FireMobileFimulator is a Firefox add-on that simulate web browsers of 
- * japanese mobile phones.
- * Copyright (C) 2008  Takahiro Horikawa <horikawa.takahiro@gmail.com>
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- * ***** END LICENSE BLOCK ***** */
+/*******************************************************************************
+ * ***** BEGIN LICENSE BLOCK Version: GPL 3.0 FireMobileFimulator is a Firefox
+ * add-on that simulate web browsers of japanese mobile phones. Copyright (C)
+ * 2008 Takahiro Horikawa <horikawa.takahiro@gmail.com>
+ * 
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ * 
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ * 
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>. ***** END LICENSE
+ * BLOCK *****
+ */
 
 const Cc = Components.classes;
 const Ci = Components.interfaces;
@@ -51,8 +52,14 @@ myHTTPListener.prototype = {
 				var id = firemobilesimulator.common.pref
 						.copyUnicharPref("msim.current.id");
 
-				dump("name:"+httpChannel.name+"\n");
-				dump("name:"+httpChannel.URI.asciiSpec+"\n");
+				var tab = firemobilesimulator_getTabIdForHttpChannel(httpChannel)
+				if (tab) {
+					var tabId = tab
+							.getAttribute("firemobilesimulator-device-id");
+					dump("###get id from tab:" + tabId + "\n");
+				}
+				dump("name:" + httpChannel.name + "\n");
+				dump("name:" + httpChannel.URI.asciiSpec + "\n");
 				httpChannel.setRequestHeader("x-msim-use", "on", false);
 
 				var uri = httpChannel.URI
@@ -107,14 +114,16 @@ myHTTPListener.prototype = {
 
 						if (uri.scheme != "https") {
 							// HTTPSではUID送信とiモードID送信は行わない
-							
+
 							values = values.map(function(value) {
 								if (value.toUpperCase() == "UID=NULLGWDOCOMO") {
-									dump("[msim]send uid:"+uid+" for DoCoMo.\n");
+									dump("[msim]send uid:" + uid
+											+ " for DoCoMo.\n");
 									value = value.substr(0, 3) + "=" + uid;
 									rewriteFlag = true;
 								} else if (value.toUpperCase() == "GUID=ON") {
-									dump("[msim]send guid:"+guid+" for DoCoMo.\n");
+									dump("[msim]send guid:" + guid
+											+ " for DoCoMo.\n");
 									httpChannel.setRequestHeader("X-DCMGUID",
 											guid, false);
 								}
@@ -303,14 +312,54 @@ function NSGetModule(compMgr, fileSpec) {
 }
 
 function rewriteURI(subject, url) {
-	var documentLoad = subject.loadFlags & (1<<16);
-	//TODO: <img src="...">の指定などでrewriteする場合に対応要
-	if(documentLoad){
+	var documentLoad = subject.loadFlags & (1 << 16);
+	// TODO: <img src="...">の指定などでrewriteする場合に対応要
+	if (documentLoad) {
 		subject.loadFlags = Ci.nsICachingChannel.LOAD_ONLY_FROM_CACHE;
 		subject.cancel(Cr.NS_ERROR_FAILURE);
 		var webNav = subject.notificationCallbacks
-				.getInterface(Ci.nsIWebNavigation);					
-		webNav.loadURI(url, Ci.nsIWebNavigation.LOAD_FLAGS_NONE, null, null, null);
-		//webNav.loadURI(url, subject.loadFlags, null, null, null);
+				.getInterface(Ci.nsIWebNavigation);
+		webNav.loadURI(url, Ci.nsIWebNavigation.LOAD_FLAGS_NONE, null, null,
+				null);
+		// webNav.loadURI(url, subject.loadFlags, null, null, null);
 	}
+}
+
+function firemobilesimulator_getTabIdForHttpChannel(httpChannel) {
+	if (httpChannel.notificationCallbacks) {
+		var interfaceRequestor = httpChannel.notificationCallbacks
+				.QueryInterface(Components.interfaces.nsIInterfaceRequestor);
+		var targetDoc = interfaceRequestor
+				.getInterface(Components.interfaces.nsIDOMWindow).document;
+
+		var webNav = httpChannel.notificationCallbacks
+				.getInterface(Ci.nsIWebNavigation);
+		var mainWindow = webNav.QueryInterface(Components.interfaces.nsIDocShellTreeItem)
+                   .rootTreeItem
+                   .QueryInterface(Components.interfaces.nsIInterfaceRequestor)
+                   .getInterface(Components.interfaces.nsIDOMWindow);
+		//var subWindow = interfaceRequestor
+		//		.getInterface(Components.interfaces.nsIDOMWindow);
+
+		dump("mainWindow:"+mainWindow+"\n");
+		//for(var i in mainWindow){
+		//	dump(i+":"+mainWindow[i]+"\n");
+		//}
+		var gBrowser = mainWindow.getBrowser();
+		dump("gBrowser:"+gBrowser+"\n");
+
+		var tab = null;
+		var targetBrowserIndex = gBrowser.getBrowserIndexForDocument(targetDoc);
+
+		// handle the case where there was no tab associated with the request
+		// (rss, etc)
+		if (targetBrowserIndex != -1)
+			tab = gBrowser.tabContainer.childNodes[targetBrowserIndex];
+		else
+			return (null);
+
+		// return(tab.linkedPanel);
+		return tab;
+	} else
+		return (null);
 }

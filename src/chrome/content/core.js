@@ -57,8 +57,16 @@ firemobilesimulator.core.setDevice = function(carrier, id) {
 						.copyUnicharPref("msim.config.SB.serial"));
 	}
 
-	firemobilesimulator.common.pref.setUnicharPref("general.useragent.override",
-			useragent);
+	//firemobilesimulator.common.pref.setUnicharPref("general.useragent.override",useragent);
+	dump("get tab info\n");
+	var tab = gBrowser.selectedTab;
+	tab.setAttribute("firemobilesimulator-device-id", id);
+	dump(gBrowser+":"+tab+"\n");
+	for(var i in tab){
+		//if(!tab[i] instanceof Function){
+			dump(i+":"+tab[i]+"\n");
+		//}
+	}
 	firemobilesimulator.common.pref
 			.setUnicharPref("msim.current.useragent", useragent);
 	firemobilesimulator.common.pref.setUnicharPref("msim.current.id", id);
