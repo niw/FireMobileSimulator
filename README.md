@@ -20,7 +20,7 @@ This graph shows how these branches are related.
                |       :
                |       o-------o
                |     92359e  coderepos/1.1.0
-               |          
+               |
         122bff o---------------o
                |             coderepos/0.2.1
                |
