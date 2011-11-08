@@ -30,3 +30,8 @@ This graph shows how these branches are related.
         bd7510 o---------------o
                ↑             thorikawa/1.1.X
         same tree object     master
+
+Icons
+-----
+
+This branch is using FAMFAMFAM Silk icons instead of weird frog and green icons, made by [Mark James](http://www.famfamfam.com/lab/icons/silk/).
